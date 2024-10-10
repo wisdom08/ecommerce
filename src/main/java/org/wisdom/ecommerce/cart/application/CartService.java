@@ -47,7 +47,7 @@ public class CartService {
                         .build()
         );
 
-        return carts.stream().filter(i -> i.cartId() == cartServiceDtoRequest.cartId()).toList();
+        return carts.stream().filter(i -> i.cartId() != cartServiceDtoRequest.cartId()).toList();
     }
 
     public List<CartApiDto.Response> addCarts(long productId) {

@@ -1,0 +1,35 @@
+@startuml
+left to right direction
+actor "유저" as user
+actor "데이터 플랫폼" as dp
+rectangle 쇼핑몰 {
+
+  package point {
+    usecase "포인트 충전" as UC1
+    usecase "포인트 조회" as UC2
+  }
+
+  package product {
+    usecase "상품 조회" as UC3
+    usecase "상품 구매" as UC4 #yellow
+    usecase "인기 판매 상품 조회" as UC5
+  }
+
+  package cart {
+      usecase "장바구니 조회" as UC6
+      usecase "장바구니 추가" as UC7
+      usecase "장바구니 삭제" as UC8
+    }
+}
+
+user --> UC1
+user --> UC2
+user --> UC3
+user --> UC4
+user --> UC5
+user --> UC6
+user --> UC7
+user --> UC8
+
+UC4 --> dp : "결제 후 주문 정보 전송"
+@enduml

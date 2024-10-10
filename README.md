@@ -66,3 +66,35 @@
 - 조회 시점의 상품 별 잔여 수량이 정확하도록 처리
 
 </details>
+
+
+<details>
+    <summary>Use Cases</summary>
+
+![usecase.png](docs/usecase.png)
+</details>
+
+
+<details>
+    <summary>Sequence Diagram</summary>
+
+### 포인트
+![포인트_조회.png](docs/sequence-diagrams/포인트_조회.png)
+![포인트_충전.png](docs/sequence-diagrams/포인트_충전.png)
+
+### 상품
+![상품_조회.png](docs/sequence-diagrams/상품_조회.png)
+![인기판매상품_조회.png](docs/sequence-diagrams/인기판매상품_조회.png)
+
+
+### 주문 결제
+![주문_결제.png](docs/sequence-diagrams/주문_결제.png)
+
+### 장바구니
+
+![장바구니_조회.png](docs/sequence-diagrams/장바구니_조회.png)
+![장바구니_추가.png](docs/sequence-diagrams/장바구니_추가.png)
+![장바구니_삭제.png](docs/sequence-diagrams/장바구니_삭제.png)
+</details>
+
+

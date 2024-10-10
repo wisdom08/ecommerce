@@ -101,3 +101,174 @@
 </details>
 
 
+<details>
+    <summary>API 명세</summary>
+
+OpenAPI: http://localhost:8080/docs
+![openAPI.png](docs/openAPI.png)
+
+### 공통 api path
+- `/api/v1/`
+
+## 상품 /products
+
+### 상품 조회 GET /{productId}
+- response
+```json
+{
+  "productId": 1,
+  "name": "MOCK_PRODUCT_1",
+  "price": 100000,
+  "stock": 100
+}
+```
+
+### 인기 상품 조회 GET /best
+- response
+```json
+[
+  {
+    "productId": 1,
+    "name": "MOCK_PRODUCT_1",
+    "price": 100000,
+    "stock": 100
+  },
+  {
+    "productId": 1,
+    "name": "MOCK_PRODUCT_2",
+    "price": 200000,
+    "stock": 200
+  }
+]
+```
+
+---
+
+## 장바구니 /carts
+
+### 장바구니 삭제 DELETE /{cartId}
+- request
+```json
+{
+  "userId": 2,
+  "cartId": 2
+}
+```
+- response: 장바구니에 담긴 상품 중 선택한 상품 제거 후 남은 장바구니 정보 반환
+```json
+[
+  {
+    "userId": 2,
+    "productId": 1,
+    "cartId": 1,
+    "productName": "MOCK_PRODUCT_NAME_1",
+    "quantity": 1
+  }
+]
+```
+
+### 장바구니 추가 PATCH /{productId}
+- response: 장바구니에 상품 추가 후 전체 장바구니 정보 반환
+```json
+[
+  {
+    "userId": 1,
+    "productId": 1,
+    "cartId": 1,
+    "productName": "MOCK_PRODUCT_NAME_1",
+    "quantity": 1
+  },
+  {
+    "userId": 2,
+    "productId": 2,
+    "cartId": 2,
+    "productName": "MOCK_PRODUCT_NAME_2",
+    "quantity": 2
+  },
+  {
+    "userId": 3,
+    "productId": 5,
+    "cartId": 3,
+    "productName": "MOCK_PRODUCT_NAME_3",
+    "quantity": 3
+  }
+]
+```
+
+### 장바구니 조회 GET /{userId}
+- response
+```json
+[
+  {
+    "userId": 1,
+    "productId": 1,
+    "cartId": 1,
+    "productName": "MOCK_PRODUCT_NAME_1",
+    "quantity": 1
+  },
+  {
+    "userId": 1,
+    "productId": 2,
+    "cartId": 2,
+    "productName": "MOCK_PRODUCT_NAME_2",
+    "quantity": 2
+  }
+]
+```
+
+---
+
+### 주문/결제 PATCH /points
+- request
+```json
+{
+  "userId": 0,
+  "productId": 0
+}
+```
+- response
+```json
+{
+  "userId": 0,
+  "productId": 0,
+  "orderId": 1,
+  "totalAmount": 10
+}
+
+```
+
+--- 
+
+### 포인트 조회
+- GET /points/{userId}
+- response
+```json
+{
+  "userId": 0,
+  "pointToCharge": 0
+}
+```
+
+- response
+
+### 포인트 충전
+- PATCH /points/{userId}
+- request
+```json
+{
+  "userId": 0,
+  "pointToCharge": 0
+}
+```
+- response
+```json
+{
+  "userId": 0,
+  "totalPoint": 0
+}
+```
+
+--- 
+
+
+</details>

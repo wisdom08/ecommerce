@@ -1,6 +1,9 @@
 # e-commerce-server
 - e-commerce 상품 주문 서비스 구현
 
+#### 기술 스택
+- Java 23, Spring Boot 3.3.4, Gradle, Mysql, JPA
+
 <details>
     <summary>요구사항</summary>
 

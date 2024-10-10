@@ -16,6 +16,7 @@ springdoc:
   packages-to-scan: org.wisdom.ecommerce
   default-consumes-media-type: application/json;charset=UTF-8
   default-produces-media-type: application/json;charset=UTF-8
+  use-fqn: true
   cache:
     disabled: true
   api-docs:

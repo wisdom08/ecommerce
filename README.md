@@ -102,6 +102,13 @@
 
 
 <details>
+    <summary>ERD</summary>
+
+![erd.png](/docs/erd.png)
+</details>
+
+
+<details>
     <summary>API 명세</summary>
 
 OpenAPI: http://localhost:8080/docs
@@ -268,7 +275,5 @@ OpenAPI: http://localhost:8080/docs
 }
 ```
 
---- 
-
-
+---
 </details>

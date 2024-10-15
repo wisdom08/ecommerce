@@ -1,11 +1,10 @@
 package org.wisdom.ecommerce.product.infra;
 
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ProductJpaRepository extends JpaRepository<Product, Long> {
+import java.util.Optional;
 
+public interface ProductJpaRepository extends JpaRepository<ProductEntity, Long> {
 
-  @EntityGraph(attributePaths = {"product_detail"})
-  Product findById(long productId);
+  Optional<ProductEntity> findById(long productId);
 }

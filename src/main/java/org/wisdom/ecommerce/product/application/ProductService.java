@@ -1,10 +1,10 @@
 package org.wisdom.ecommerce.product.application;
 
-import java.util.List;
 import org.springframework.stereotype.Service;
-import org.wisdom.ecommerce.product.infra.Product;
+import org.wisdom.ecommerce.product.domain.Product;
 import org.wisdom.ecommerce.product.presentation.ProductApiDto;
-import org.wisdom.ecommerce.product.presentation.ProductApiDto.Response;
+
+import java.util.List;
 
 @Service
 public class ProductService {
@@ -15,21 +15,20 @@ public class ProductService {
     this.productRepository = productRepository;
   }
 
-  public ProductInfo.Response getProductBy(long productId) {
-    Product product = productRepository.findBy(productId);
-    return ProductInfo.Response.from(product);
+  public Product getProductBy(long productId) {
+    return productRepository.getProductBy(productId);
   }
 
-  public List<Response> getBestOfProducts() {
+  public List<ProductApiDto> getBestOfProducts() {
     return List.of(
-        ProductApiDto.Response.builder()
+        ProductApiDto.builder()
             .productId(1)
             .name("MOCK_PRODUCT_1")
             .price(100000)
             .quantity(100)
             .build(),
 
-        ProductApiDto.Response.builder()
+        ProductApiDto.builder()
             .productId(1)
             .name("MOCK_PRODUCT_2")
             .price(200000)

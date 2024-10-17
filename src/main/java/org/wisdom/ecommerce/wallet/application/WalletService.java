@@ -1,6 +1,7 @@
 package org.wisdom.ecommerce.wallet.application;
 
 import org.springframework.stereotype.Service;
+import org.wisdom.ecommerce.wallet.domain.Wallet;
 
 @Service
 public class WalletService {
@@ -11,12 +12,15 @@ public class WalletService {
         this.walletRepository = walletRepository;
     }
 
-    public WalletServiceDto chargePoint(long userId, int amount) {
 
-        return null;
+
+    public Wallet getWalletBy(long validUserId) {
+        return walletRepository.getWalletBy(validUserId);
     }
 
-    public WalletServiceDto getPointBy(long userId) {
-        return WalletServiceDto.from(walletRepository.getWalletBy(userId));
+    public WalletServiceDto charge(Wallet wallet, int amount) {
+        wallet.validateAmount(amount);
+        walletRepository.updateBalance(wallet.walletId(), amount+ wallet.balance());
+        return WalletServiceDto.walletCharged(wallet, amount);
     }
 }

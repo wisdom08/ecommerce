@@ -1,7 +1,5 @@
 package org.wisdom.ecommerce.user.wallet.presentation;
 
-import static org.mockito.Mockito.verify;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -9,6 +7,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.wisdom.ecommerce.wallet.application.WalletService;
 import org.wisdom.ecommerce.wallet.presentation.WalletController;
+
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class WalletControllerTest {
@@ -26,7 +26,7 @@ class WalletControllerTest {
         // when
         controller.getPointsBy(userId);
         // then
-        verify(service).getPointBy(userId);
+        verify(service).getWalletBy(userId);
     }
 
 //    @Test

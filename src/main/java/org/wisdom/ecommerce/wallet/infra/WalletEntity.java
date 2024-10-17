@@ -5,10 +5,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Builder;
 import lombok.Getter;
 import org.wisdom.ecommerce.config.BaseTimeEntity;
 import org.wisdom.ecommerce.wallet.domain.Wallet;
 
+@Builder
 @Getter
 @Table(name = "wallet")
 @Entity
@@ -20,17 +22,28 @@ public class WalletEntity extends BaseTimeEntity {
     private long userId;
     private int balance;
 
-    public static WalletEntity from(Wallet wallet) {
-        WalletEntity walletEntity = new WalletEntity();
-        walletEntity.id = wallet.id();
-        walletEntity.balance = wallet.balance();
-        return walletEntity;
+    public WalletEntity() {
+
+    }
+
+    public WalletEntity(long id, long userId, int balance) {
+        this.id = id;
+        this.userId = userId;
+        this.balance = balance;
+    }
+
+    public static WalletEntity of(long userId, int amount) {
+        return WalletEntity.builder()
+                .userId(userId)
+                .balance(amount)
+                .build();
     }
 
     public Wallet toDomain() {
         return Wallet.builder()
-            .id(id)
-            .balance(balance)
-            .build();
+                .userId(userId)
+                .walletId(id)
+                .balance(balance)
+                .build();
     }
 }

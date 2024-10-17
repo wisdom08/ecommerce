@@ -21,4 +21,8 @@ public class WalletRepositoryImpl implements WalletRepository {
             .toDomain();
     }
 
+    @Override
+    public void updateBalance(long walletId, int amount) {
+        walletJpaRepository.updateBalance(walletId, amount);
+    }
 }

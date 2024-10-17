@@ -6,5 +6,7 @@ import org.wisdom.ecommerce.wallet.domain.Wallet;
 @Repository
 public interface WalletRepository {
 
-    Wallet getWalletBy(long userId);
+    Wallet getWalletBy(long validUserId);
+
+    void updateBalance(long walletId, int amount);
 }

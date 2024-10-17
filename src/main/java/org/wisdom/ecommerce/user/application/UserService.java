@@ -11,7 +11,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public UserServiceDto getUserBy(long userId) {
-        return UserServiceDto.from(userRepository.getUserBy(userId));
+    public long getUserBy(long userId) {
+        return userRepository.getUserBy(userId);
     }
 }

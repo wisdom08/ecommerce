@@ -1,4 +1,6 @@
-package org.wisdom.ecommerce.order.presentation;
+package org.wisdom.ecommerce.user.order.presentation;
+
+import static org.mockito.Mockito.verify;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -6,8 +8,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.wisdom.ecommerce.order.application.OrderService;
-
-import static org.mockito.Mockito.verify;
+import org.wisdom.ecommerce.order.presentation.OrderApiDto;
+import org.wisdom.ecommerce.order.presentation.OrderController;
 
 
 @ExtendWith(MockitoExtension.class)

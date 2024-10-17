@@ -1,5 +1,8 @@
-package org.wisdom.ecommerce.cart;
+package org.wisdom.ecommerce.user.cart;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -7,10 +10,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.wisdom.ecommerce.cart.application.CartService;
 import org.wisdom.ecommerce.cart.application.CartServiceDto;
 import org.wisdom.ecommerce.cart.presentation.CartApiDto;
-
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
 class CartServiceTest {
@@ -27,7 +26,8 @@ class CartServiceTest {
 
         // then
         assertThat(result.size()).isEqualTo(2);
-        assertThat(result.stream().map(CartApiDto.Response::productName)).isEqualTo(List.of("MOCK_PRODUCT_NAME_1", "MOCK_PRODUCT_NAME_2"));
+        assertThat(result.stream().map(CartApiDto.Response::productName)).isEqualTo(
+            List.of("MOCK_PRODUCT_NAME_1", "MOCK_PRODUCT_NAME_2"));
     }
 
     @Test
@@ -39,7 +39,8 @@ class CartServiceTest {
 
         // then
         assertThat(result.size()).isEqualTo(3);
-        assertThat(result.stream().map(CartApiDto.Response::productName)).isEqualTo(List.of("MOCK_PRODUCT_NAME_1", "MOCK_PRODUCT_NAME_2", "MOCK_PRODUCT_NAME_3"));
+        assertThat(result.stream().map(CartApiDto.Response::productName)).isEqualTo(
+            List.of("MOCK_PRODUCT_NAME_1", "MOCK_PRODUCT_NAME_2", "MOCK_PRODUCT_NAME_3"));
     }
 
     @Test

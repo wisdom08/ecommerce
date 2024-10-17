@@ -1,4 +1,6 @@
-package org.wisdom.ecommerce.cart;
+package org.wisdom.ecommerce.user.cart;
+
+import static org.mockito.Mockito.verify;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -8,8 +10,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.wisdom.ecommerce.cart.application.CartService;
 import org.wisdom.ecommerce.cart.presentation.CartApiDto;
 import org.wisdom.ecommerce.cart.presentation.CartController;
-
-import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class CartControllerTest {

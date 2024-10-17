@@ -5,7 +5,7 @@ import lombok.Builder;
 public class OrderServiceDto {
 
     @Builder
-    public record Request (long userId, long productId) {
+    public record Request(long userId, long productId) {
 
     }
 }

@@ -1,12 +1,14 @@
-package org.wisdom.ecommerce.order.application;
+package org.wisdom.ecommerce.user.order.application;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.wisdom.ecommerce.order.application.OrderService;
+import org.wisdom.ecommerce.order.application.OrderServiceDto;
 import org.wisdom.ecommerce.order.presentation.OrderApiDto;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
 class OrderServiceTest {
@@ -18,9 +20,9 @@ class OrderServiceTest {
     void 주문_응답_확인() {
         // given
         OrderServiceDto.Request orderServiceDto = OrderApiDto.Request.builder()
-                .userId(0)
-                .productId(0)
-                .build().toOrderServiceDto();
+            .userId(0)
+            .productId(0)
+            .build().toOrderServiceDto();
 
         // when
         OrderApiDto.Response result = service.order(orderServiceDto);

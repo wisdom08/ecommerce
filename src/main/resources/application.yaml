@@ -11,6 +11,12 @@ spring:
   jpa:
     show-sql: true
     database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: none
+    generate-ddl: true
+  sql:
+    init:
+      mode: always
 
 springdoc:
   packages-to-scan: org.wisdom.ecommerce

@@ -36,4 +36,8 @@ public class ProductService {
             .build()
     );
   }
+
+  public List<ProductServiceDto> getProductsBy(List<Long> productIds) {
+    return productRepository.getProductsBy(productIds).stream().map(ProductServiceDto::from).toList();
+  }
 }

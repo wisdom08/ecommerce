@@ -23,7 +23,7 @@ create table ecommerce.transaction
     id         bigint auto_increment primary key,
     wallet_id  bigint,
     amount     int,
-    type       enum ('charge', 'deduct'),
+    type       varchar(20),
     created_at timestamp,
     updated_at timestamp
 );
@@ -58,7 +58,7 @@ create table ecommerce.orders
 (
     id         bigint auto_increment primary key,
     user_id    bigint,
-    status     enum ('paid', 'preparing', 'delivered'),
+    status     varchar(20),
     created_at timestamp,
     updated_at timestamp
 );
@@ -69,7 +69,7 @@ create table ecommerce.order_item
     order_id   bigint,
     product_id bigint,
     quantity   int,
-    price      int,
+    unit_price int,
     created_at timestamp,
     updated_at timestamp
 );

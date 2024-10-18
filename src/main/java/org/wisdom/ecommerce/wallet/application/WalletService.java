@@ -13,14 +13,13 @@ public class WalletService {
     }
 
 
-
     public Wallet getWalletBy(long validUserId) {
         return walletRepository.getWalletBy(validUserId);
     }
 
     public WalletServiceDto charge(Wallet wallet, int amount) {
-        wallet.validateAmount(amount);
-        walletRepository.updateBalance(wallet.walletId(), amount+ wallet.balance());
+        wallet.validateChargeAmount(amount);
+        walletRepository.updateBalance(wallet.walletId(), amount + wallet.balance());
         return WalletServiceDto.walletCharged(wallet, amount);
     }
 }

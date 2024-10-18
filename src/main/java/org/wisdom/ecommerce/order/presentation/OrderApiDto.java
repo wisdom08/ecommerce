@@ -8,7 +8,7 @@ import org.wisdom.ecommerce.order.application.OrderServiceDto;
 public class OrderApiDto {
 
     @Builder
-    public record Request(long userId, long productId) {
+    public record Request(long userId, long productId, int quantity) {
 
         public OrderServiceDto.Request toOrderServiceDto() {
             return OrderServiceDto.Request.builder()
@@ -22,5 +22,9 @@ public class OrderApiDto {
     @Builder
     public record Response(long userId, long productId, long orderId, BigDecimal totalAmount) {
 
+        public static Response of(OrderServiceDto serviceDto) {
+            return Response.builder()
+                .build();
+        }
     }
 }

@@ -4,4 +4,5 @@ import lombok.Builder;
 
 @Builder
 public record Product(long productId, String name, int price, int quantity) {
+
 }

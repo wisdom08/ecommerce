@@ -15,40 +15,40 @@ import org.wisdom.ecommerce.cart.presentation.CartController;
 @ExtendWith(MockitoExtension.class)
 class CartControllerTest {
 
-    @InjectMocks
-    private CartController controller;
+  @InjectMocks
+  private CartController controller;
 
-    @Mock
-    private CartFacade facade;
+  @Mock
+  private CartFacade facade;
 
-    @Test
-    void 장바구니_조회() {
-        // given
-        long userId = 0;
-        // when
-        controller.getCartBy(userId);
-        // then
-        verify(facade).getCartBy(userId);
-    }
+  @Test
+  void 장바구니_조회() {
+    // given
+    long userId = 0;
+    // when
+    controller.getCartBy(userId);
+    // then
+    verify(facade).getCartBy(userId);
+  }
 
-    @Test
-    void 장바구니_추가() {
-        // given
-        // when
-        AddRequest request = AddRequest.builder().userId(0).productId(0).quantity(0).build();
-        controller.addProductToCart(request);
-        // then
-        verify(facade).addProductToCart(request.userId(), request.productId(), request.quantity());
-    }
+  @Test
+  void 장바구니_추가() {
+    // given
+    // when
+    AddRequest request = AddRequest.builder().userId(0).productId(0).quantity(0).build();
+    controller.addProductToCart(request);
+    // then
+    verify(facade).addProductToCart(request.userId(), request.productId(), request.quantity());
+  }
 
-    @Test
-    void 장바구니_삭제() {
-        // given
-        // when
-        DeleteRequest request = DeleteRequest.builder().userId(0).cartId(0).build();
-        controller.removeProductFromCart(request);
-        // then
-        verify(facade).removeProductFromCart(request.userId(), request.cartId());
-    }
+  @Test
+  void 장바구니_삭제() {
+    // given
+    // when
+    DeleteRequest request = DeleteRequest.builder().userId(0).cartId(0).build();
+    controller.removeProductFromCart(request);
+    // then
+    verify(facade).removeProductFromCart(request.userId(), request.cartId());
+  }
 
 }

@@ -11,32 +11,33 @@ import org.wisdom.ecommerce.wallet.domain.Wallet;
 @Component
 public class OrderFacade {
 
-    private final UserService userService;
-    private final WalletService walletService;
-    private final ProductService productService;
-    private final OrderService orderService;
-    private final OrderItemService orderItemService;
-    private final DataPlatform dataPlatform;
+  private final UserService userService;
+  private final WalletService walletService;
+  private final ProductService productService;
+  private final OrderService orderService;
+  private final OrderItemService orderItemService;
+  private final DataPlatform dataPlatform;
 
-    public OrderFacade(UserService userService, WalletService walletService, ProductService productService,
-        OrderService orderService, OrderItemService orderItemService, DataPlatform dataPlatform) {
-        this.userService = userService;
-        this.walletService = walletService;
-        this.productService = productService;
-        this.orderService = orderService;
-        this.orderItemService = orderItemService;
-        this.dataPlatform = dataPlatform;
-    }
+  public OrderFacade(UserService userService, WalletService walletService,
+      ProductService productService,
+      OrderService orderService, OrderItemService orderItemService, DataPlatform dataPlatform) {
+    this.userService = userService;
+    this.walletService = walletService;
+    this.productService = productService;
+    this.orderService = orderService;
+    this.orderItemService = orderItemService;
+    this.dataPlatform = dataPlatform;
+  }
 
-    public void place(long userId, long productId, int quantity) {
-        userService.getUserBy(userId);
-        ProductApplicationDto product = productService.getProductBy(productId);
-        Wallet wallet = walletService.getWalletBy(userId);
+  public void place(long userId, long productId, int quantity) {
+    userService.getUserBy(userId);
+    ProductApplicationDto product = productService.getProductBy(productId);
+    Wallet wallet = walletService.getWalletBy(userId);
 
-        wallet.validatePayAmount(product.price());
+    wallet.validatePayAmount(product.price());
 
-        long orderId = orderService.order(userId);
-        orderItemService.save(orderId, product.id(), quantity, product.price());
-        dataPlatform.send();
-    }
+    long orderId = orderService.order(userId);
+    orderItemService.save(orderId, product.id(), quantity, product.price());
+    dataPlatform.send();
+  }
 }

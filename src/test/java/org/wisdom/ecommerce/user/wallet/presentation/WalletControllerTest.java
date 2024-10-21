@@ -15,22 +15,22 @@ import org.wisdom.ecommerce.wallet.presentation.WalletController;
 @ExtendWith(MockitoExtension.class)
 class WalletControllerTest {
 
-    @InjectMocks
-    private WalletController controller;
+  @InjectMocks
+  private WalletController controller;
 
-    @Mock
-    private WalletFacade facade;
+  @Mock
+  private WalletFacade facade;
 
-    @Test
-    void 포인트_조회_호출_확인() {
-        // given
-        long userId = 1L;
-        when(facade.getWalletBalance(userId)).thenReturn(WalletServiceDto.builder().build());
-        // when
-        controller.getPointsBy(userId);
-        // then
-        verify(facade).getWalletBalance(userId);
-    }
+  @Test
+  void 포인트_조회_호출_확인() {
+    // given
+    long userId = 1L;
+    when(facade.getWalletBalance(userId)).thenReturn(WalletServiceDto.builder().build());
+    // when
+    controller.getPointsBy(userId);
+    // then
+    verify(facade).getWalletBalance(userId);
+  }
 
 //    @Test
 //    void 포인트_충전_호출_확인() {

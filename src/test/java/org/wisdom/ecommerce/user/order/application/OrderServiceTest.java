@@ -11,24 +11,24 @@ import org.wisdom.ecommerce.order.presentation.OrderApiDto;
 @ExtendWith(MockitoExtension.class)
 class OrderServiceTest {
 
-    @InjectMocks
-    private OrderService service;
+  @InjectMocks
+  private OrderService service;
 
-    @Test
-    void 주문_응답_확인() {
-        // given
-        OrderServiceDto.Request orderServiceDto = OrderApiDto.Request.builder()
-            .userId(0)
-            .productId(0)
-            .build().toOrderServiceDto();
+  @Test
+  void 주문_응답_확인() {
+    // given
+    OrderServiceDto.Request orderServiceDto = OrderApiDto.Request.builder()
+        .userId(0)
+        .productId(0)
+        .build().toOrderServiceDto();
 
-        // when
+    // when
 //        OrderApiDto.Response result = service.order(orderServiceDto);
 
-        // then
+    // then
 //        assertThat(result.productId()).isEqualTo(0);
 //        assertThat(result.userId()).isEqualTo(0);
-    }
+  }
 
 
 }

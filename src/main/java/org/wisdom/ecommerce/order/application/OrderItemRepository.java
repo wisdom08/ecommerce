@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface OrderItemRepository {
 
-    void save(long orderId, long productId, int quantity, int price);
+  void save(long orderId, long productId, int quantity, int price);
 
-    List<Long> bestItemsForThreeDays();
+  List<Long> bestItemsForThreeDays();
 }

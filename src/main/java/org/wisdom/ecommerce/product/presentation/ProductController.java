@@ -15,22 +15,23 @@ import org.wisdom.ecommerce.product.application.ProductFacade;
 @RestController
 public class ProductController {
 
-    private final ProductFacade productFacade;
+  private final ProductFacade productFacade;
 
-    public ProductController(ProductFacade productFacade) {
-        this.productFacade = productFacade;
-    }
+  public ProductController(ProductFacade productFacade) {
+    this.productFacade = productFacade;
+  }
 
 
-    @Operation(summary = "조회")
-    @GetMapping("/{productId}")
-    public CommonApiResponse<ProductApiDto> getProductBy(@PathVariable(name = "productId") long productId) {
-        return CommonApiResponse.success(ProductApiDto.from(productFacade.getProductBy(productId)));
-    }
+  @Operation(summary = "조회")
+  @GetMapping("/{productId}")
+  public CommonApiResponse<ProductApiDto> getProductBy(
+      @PathVariable(name = "productId") long productId) {
+    return CommonApiResponse.success(ProductApiDto.from(productFacade.getProductBy(productId)));
+  }
 
-    @Operation(summary = "인기 상품 조회")
-    @GetMapping("/best")
-    public CommonApiResponse<List<Long>> getBestOfProducts() {
-        return CommonApiResponse.success(productFacade.getBestOfProducts());
-    }
+  @Operation(summary = "인기 상품 조회")
+  @GetMapping("/best")
+  public CommonApiResponse<List<Long>> getBestOfProducts() {
+    return CommonApiResponse.success(productFacade.getBestOfProducts());
+  }
 }

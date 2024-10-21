@@ -13,15 +13,16 @@ import org.wisdom.ecommerce.order.application.OrderFacade;
 @RestController
 public class OrderController {
 
-    private final OrderFacade orderFacade;
+  private final OrderFacade orderFacade;
 
-    public OrderController(OrderFacade orderFacade) {
-        this.orderFacade = orderFacade;
-    }
+  public OrderController(OrderFacade orderFacade) {
+    this.orderFacade = orderFacade;
+  }
 
-    @PatchMapping
-    public CommonApiResponse<OrderApiDto.Response> order(@RequestBody OrderApiDto.Request orderRequest) {
-        orderFacade.place(orderRequest.userId(), orderRequest.productId(), orderRequest.quantity());
-        return CommonApiResponse.success(null);
-    }
+  @PatchMapping
+  public CommonApiResponse<OrderApiDto.Response> order(
+      @RequestBody OrderApiDto.Request orderRequest) {
+    orderFacade.place(orderRequest.userId(), orderRequest.productId(), orderRequest.quantity());
+    return CommonApiResponse.success(null);
+  }
 }

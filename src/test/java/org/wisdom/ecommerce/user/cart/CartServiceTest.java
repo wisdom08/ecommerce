@@ -14,21 +14,21 @@ import org.wisdom.ecommerce.cart.application.CartService;
 @ExtendWith(MockitoExtension.class)
 class CartServiceTest {
 
-    @InjectMocks
-    private CartService service;
+  @InjectMocks
+  private CartService service;
 
-    @Mock
-    private CartRepository repository;
+  @Mock
+  private CartRepository repository;
 
-    @Test
-    void 유저의_장바구니_아이디를_가져온다() {
-        // given
-        when(repository.getCartBy(1)).thenReturn(1L);
+  @Test
+  void 유저의_장바구니_아이디를_가져온다() {
+    // given
+    when(repository.getCartBy(1)).thenReturn(1L);
 
-        // when
-        long result = service.getCartsBy(1);
+    // when
+    long result = service.getCartsBy(1);
 
-        // then
-        assertThat(result).isEqualTo(1L);
-    }
+    // then
+    assertThat(result).isEqualTo(1L);
+  }
 }

@@ -15,15 +15,15 @@ import org.wisdom.ecommerce.user.domain.User;
 @Entity
 public class UserEntity extends BaseTimeEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
-    private String email;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private long id;
+  private String email;
 
-    public User toDomain() {
-        return User.builder()
-            .userId(id)
-            .email(email)
-            .build();
-    }
+  public User toDomain() {
+    return User.builder()
+        .userId(id)
+        .email(email)
+        .build();
+  }
 }

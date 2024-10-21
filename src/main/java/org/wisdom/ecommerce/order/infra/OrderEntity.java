@@ -17,27 +17,27 @@ import org.wisdom.ecommerce.config.BaseTimeEntity;
 @Entity
 public class OrderEntity extends BaseTimeEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private long id;
 
-    private long userId;
-    @Enumerated(EnumType.STRING)
-    private OrderStatus status;
+  private long userId;
+  @Enumerated(EnumType.STRING)
+  private OrderStatus status;
 
-    public OrderEntity() {
-    }
+  public OrderEntity() {
+  }
 
-    public OrderEntity(long id, long userId, OrderStatus orderStatus) {
-        this.id = id;
-        this.userId = userId;
-        this.status = orderStatus;
-    }
+  public OrderEntity(long id, long userId, OrderStatus orderStatus) {
+    this.id = id;
+    this.userId = userId;
+    this.status = orderStatus;
+  }
 
-    public static OrderEntity of(long userId) {
-        return OrderEntity.builder()
-            .userId(userId)
-            .status(OrderStatus.PAID)
-            .build();
-    }
+  public static OrderEntity of(long userId) {
+    return OrderEntity.builder()
+        .userId(userId)
+        .status(OrderStatus.PAID)
+        .build();
+  }
 }

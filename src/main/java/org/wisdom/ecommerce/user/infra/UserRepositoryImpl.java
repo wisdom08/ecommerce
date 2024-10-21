@@ -7,15 +7,15 @@ import org.wisdom.ecommerce.user.application.UserRepository;
 @Repository
 public class UserRepositoryImpl implements UserRepository {
 
-    private final UserJpaRepository repository;
+  private final UserJpaRepository repository;
 
-    public UserRepositoryImpl(UserJpaRepository repository) {
-        this.repository = repository;
-    }
+  public UserRepositoryImpl(UserJpaRepository repository) {
+    this.repository = repository;
+  }
 
-    @Override
-    public long getUserBy(long userId) {
-        return repository.findById(userId)
-            .orElseThrow(() -> new EntityNotFoundException(userId + "의 유저가 없습니다")).getId();
-    }
+  @Override
+  public long getUserBy(long userId) {
+    return repository.findById(userId)
+        .orElseThrow(() -> new EntityNotFoundException(userId + "의 유저가 없습니다")).getId();
+  }
 }

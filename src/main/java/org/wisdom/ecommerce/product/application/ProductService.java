@@ -1,37 +1,30 @@
 package org.wisdom.ecommerce.product.application;
 
-import org.springframework.stereotype.Service;
-import org.wisdom.ecommerce.product.presentation.ProductApiDto;
-
-import java.math.BigDecimal;
 import java.util.List;
+import org.springframework.stereotype.Service;
+import org.wisdom.ecommerce.order.application.OrderItemService;
+import org.wisdom.ecommerce.product.domain.Product;
 
 @Service
 public class ProductService {
-    public ProductApiDto.Response getProductBy(long productId) {
-        return ProductApiDto.Response.builder()
-                .productId(productId)
-                .name("MOCK_PRODUCT_1")
-                .price(BigDecimal.valueOf(100000))
-                .stock(100)
-                .build();
+
+    private final ProductRepository productRepository;
+    private final OrderItemService orderItemService;
+
+    public ProductService(ProductRepository productRepository, OrderItemService orderItemService) {
+        this.productRepository = productRepository;
+        this.orderItemService = orderItemService;
     }
 
-    public List<ProductApiDto.Response> getBestOfProducts() {
-        return List.of(
-                ProductApiDto.Response.builder()
-                .productId(1)
-                .name("MOCK_PRODUCT_1")
-                .price(BigDecimal.valueOf(100000))
-                .stock(100)
-                .build(),
+    public Product getProductBy(long productId) {
+        return productRepository.getProductBy(productId);
+    }
 
-                ProductApiDto.Response.builder()
-                        .productId(1)
-                        .name("MOCK_PRODUCT_2")
-                        .price(BigDecimal.valueOf(200000))
-                        .stock(200)
-                        .build()
-                );
+    public List<Long> getBestOfProducts() {
+        return orderItemService.bestItemsForThreeDays();
+    }
+
+    public List<ProductServiceDto> getProductsBy(List<Long> productIds) {
+        return productRepository.getProductsBy(productIds).stream().map(ProductServiceDto::from).toList();
     }
 }

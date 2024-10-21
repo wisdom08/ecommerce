@@ -1,6 +1,9 @@
 package org.wisdom.ecommerce.user.wallet.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.only;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.Test;
@@ -15,38 +18,30 @@ import org.wisdom.ecommerce.wallet.domain.Wallet;
 @ExtendWith(MockitoExtension.class)
 class WalletServiceTest {
 
+  private final Long userId = 0L;
+  private final Integer amount = 100000;
   @InjectMocks
   private WalletService service;
-
   @Mock
   private WalletRepository repository;
 
   @Test
   void 포인트_조회_응답_확인() {
     // given
-    when(repository.getWalletBy(0L)).thenReturn(
-        Wallet.builder().userId(0L).balance(100000).build());
+    when(repository.getWalletBy(userId)).thenReturn(Wallet.builder().userId(userId).balance(amount).build());
     // when
-    Wallet result = service.getWalletBy(0L);
+    Wallet result = service.getWalletBy(userId);
     // then
-    assertThat(result.userId()).isEqualTo(0L);
-    assertThat(result.balance()).isEqualTo(100000);
+    assertThat(result.userId()).isEqualTo(userId);
+    assertThat(result.balance()).isEqualTo(amount);
   }
 
-//    @Test
-//    void 포인트_충전_응답_확인() {
-//        // given
-//        WalletServiceDto.Request serviceDto = WalletApiDto.Request.builder()
-//            .userId(0L)
-//            .pointToCharge(BigDecimal.valueOf(100000))
-//            .build()
-//            .toPointServiceDto();
-//
-//        // when
-//        WalletApiDto.Response result = service.chargePoints(serviceDto);
-//
-//        // then
-//        assertThat(result.userId()).isEqualTo(0L);
-//        assertThat(result.totalPoint()).isEqualTo(BigDecimal.valueOf(100000));
-//    }
+  @Test
+  void 포인트_충전을_하기_위해_walletRepository의_updateBalance를_호출한다() {
+    // given
+    // when
+    service.charge(Wallet.builder().build(), amount);
+    // then
+    verify(repository, only()).updateBalance(any(), any());
+  }
 }

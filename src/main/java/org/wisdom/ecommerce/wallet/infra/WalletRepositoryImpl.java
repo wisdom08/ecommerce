@@ -15,14 +15,14 @@ public class WalletRepositoryImpl implements WalletRepository {
   }
 
   @Override
-  public Wallet getWalletBy(long userId) {
+  public Wallet getWalletBy(Long userId) {
     return walletJpaRepository.findByUserId(userId)
         .orElseThrow(() -> new EntityNotFoundException(userId + "의 지갑이 없습니다"))
         .toDomain();
   }
 
   @Override
-  public void updateBalance(long walletId, int amount) {
+  public void updateBalance(Long walletId, Integer amount) {
     walletJpaRepository.updateBalance(walletId, amount);
   }
 }

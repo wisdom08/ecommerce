@@ -11,7 +11,7 @@ public class TransactionService {
     this.repository = repository;
   }
 
-  public void saveTransaction(long walletId, int amount) {
+  public void saveTransaction(Long walletId, Integer amount) {
     repository.save(walletId, amount);
   }
 }

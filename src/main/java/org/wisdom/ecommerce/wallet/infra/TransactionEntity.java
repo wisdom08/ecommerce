@@ -28,15 +28,14 @@ public class TransactionEntity extends BaseTimeEntity {
   @Enumerated(EnumType.STRING)
   private TransactionType type;
 
+  public TransactionEntity() {
+  }
+
   public TransactionEntity(long id, long walletId, int amount, TransactionType type) {
     this.id = id;
     this.walletId = walletId;
     this.amount = amount;
     this.type = type;
-  }
-
-  public TransactionEntity() {
-
   }
 
   public static TransactionEntity chargeOf(long walletId, int amount) {

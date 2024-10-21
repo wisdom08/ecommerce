@@ -1,14 +1,16 @@
 package org.wisdom.ecommerce.user.cart;
 
+import static org.mockito.Mockito.verify;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.wisdom.ecommerce.cart.application.CartService;
+import org.wisdom.ecommerce.cart.application.CartFacade;
+import org.wisdom.ecommerce.cart.presentation.CartApiDto.AddRequest;
+import org.wisdom.ecommerce.cart.presentation.CartApiDto.DeleteRequest;
 import org.wisdom.ecommerce.cart.presentation.CartController;
-
-import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class CartControllerTest {
@@ -17,7 +19,7 @@ class CartControllerTest {
     private CartController controller;
 
     @Mock
-    private CartService service;
+    private CartFacade facade;
 
     @Test
     void 장바구니_조회() {
@@ -26,27 +28,27 @@ class CartControllerTest {
         // when
         controller.getCartBy(userId);
         // then
-        verify(service).getCartsBy(userId);
+        verify(facade).getCartBy(userId);
     }
 
     @Test
     void 장바구니_추가() {
         // given
-        long userId = 0;
         // when
-        controller.getCartBy(userId);
+        AddRequest request = AddRequest.builder().userId(0).productId(0).quantity(0).build();
+        controller.addProductToCart(request);
         // then
-        verify(service).getCartsBy(userId);
+        verify(facade).addProductToCart(request.userId(), request.productId(), request.quantity());
     }
 
     @Test
     void 장바구니_삭제() {
         // given
-//        CartApiDto.Request cartApiRequest = CartApiDto.Request.builder().build();
         // when
-//        controller.removeProductInCarts(cartApiRequest);
+        DeleteRequest request = DeleteRequest.builder().userId(0).cartId(0).build();
+        controller.removeProductFromCart(request);
         // then
-//        verify(service).removeProductInCarts(cartApiRequest.toCartServiceDto());
+        verify(facade).removeProductFromCart(request.userId(), request.cartId());
     }
 
 }

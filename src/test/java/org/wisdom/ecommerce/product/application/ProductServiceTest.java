@@ -29,23 +29,11 @@ class ProductServiceTest {
             .price(100000)
             .build());
         // when
-        Product result = service.getProductBy(0L);
+        ProductApplicationDto result = service.getProductBy(0L);
 
         // then
-        assertThat(result.productId()).isEqualTo(0L);
+        assertThat(result.id()).isEqualTo(0L);
         assertThat(result.name()).isEqualTo("MOCK_PRODUCT_1");
         assertThat(result.price()).isEqualTo(100000);
-        assertThat(result.quantity()).isEqualTo(100);
-    }
-
-    @Test
-    void 인기_상품_조회_응답_확인() {
-        // given
-        // when
-//        List<ProductApiDto> result = service.getBestOfProducts();
-
-        // then
-//        assertThat(result.size()).isEqualTo(2);
-//        assertThat(result.stream().map(ProductApiDto::name)).isEqualTo(List.of("MOCK_PRODUCT_1", "MOCK_PRODUCT_2"));
     }
 }

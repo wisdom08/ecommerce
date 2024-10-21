@@ -1,13 +1,16 @@
 package org.wisdom.ecommerce.product.presentation;
 
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.wisdom.ecommerce.product.application.ProductService;
-
-import static org.mockito.Mockito.verify;
+import org.wisdom.ecommerce.product.application.ProductApplicationDto;
+import org.wisdom.ecommerce.product.application.ProductFacade;
+import org.wisdom.ecommerce.product.domain.Product;
 
 @ExtendWith(MockitoExtension.class)
 class ProductControllerTest {
@@ -16,16 +19,18 @@ class ProductControllerTest {
     private ProductController controller;
 
     @Mock
-    private ProductService service;
+    private ProductFacade facade;
 
     @Test
     void 상품_조회_호출_확인() {
         // given
         long productId = 0;
+        when(facade.getProductBy(productId)).thenReturn(
+            ProductApplicationDto.toResponse(Product.builder().build())); // Moc
         // when
         controller.getProductBy(productId);
         // then
-        verify(service).getProductBy(productId);
+        verify(facade).getProductBy(productId);
     }
 
     @Test
@@ -34,6 +39,6 @@ class ProductControllerTest {
         // when
         controller.getBestOfProducts();
         // then
-        verify(service).getBestOfProducts();
+        verify(facade).getBestOfProducts();
     }
 }

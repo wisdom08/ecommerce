@@ -1,9 +1,8 @@
 package org.wisdom.ecommerce.cart.application;
 
+import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 public class CartItemService {
@@ -15,8 +14,8 @@ public class CartItemService {
     }
 
     @Transactional(readOnly = true)
-    public List<CartServiceDto> getCartItems(long validCartId) {
-        return repository.getCartItems(validCartId).stream().map(CartServiceDto::from).toList();
+    public List<CartApplicationDto> getCartItems(long validCartId) {
+        return repository.getCartItems(validCartId).stream().map(CartApplicationDto::from).toList();
     }
 
     @Transactional

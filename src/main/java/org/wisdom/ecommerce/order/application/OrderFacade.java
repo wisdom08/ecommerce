@@ -2,8 +2,8 @@ package org.wisdom.ecommerce.order.application;
 
 import org.springframework.stereotype.Component;
 import org.wisdom.ecommerce.order.infra.DataPlatform;
+import org.wisdom.ecommerce.product.application.ProductApplicationDto;
 import org.wisdom.ecommerce.product.application.ProductService;
-import org.wisdom.ecommerce.product.domain.Product;
 import org.wisdom.ecommerce.user.application.UserService;
 import org.wisdom.ecommerce.wallet.application.WalletService;
 import org.wisdom.ecommerce.wallet.domain.Wallet;
@@ -30,13 +30,13 @@ public class OrderFacade {
 
     public void place(long userId, long productId, int quantity) {
         userService.getUserBy(userId);
-        Product product = productService.getProductBy(productId);
+        ProductApplicationDto product = productService.getProductBy(productId);
         Wallet wallet = walletService.getWalletBy(userId);
 
         wallet.validatePayAmount(product.price());
 
         long orderId = orderService.order(userId);
-        orderItemService.save(orderId, product.productId(), quantity, product.price());
+        orderItemService.save(orderId, product.id(), quantity, product.price());
         dataPlatform.send();
     }
 }

@@ -1,9 +1,14 @@
 package org.wisdom.ecommerce.user.cart;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.wisdom.ecommerce.cart.application.CartRepository;
 import org.wisdom.ecommerce.cart.application.CartService;
 
 @ExtendWith(MockitoExtension.class)
@@ -12,41 +17,18 @@ class CartServiceTest {
     @InjectMocks
     private CartService service;
 
-    @Test
-    void 장바구니_조회_응답_확인() {
-        // given
-
-        // when
-//        List<CartApiDto.Response> result = service.getCartsBy(1);
-
-        // then
-//        assertThat(result.size()).isEqualTo(2);
-//        assertThat(result.stream().map(CartApiDto.Response::productName)).isEqualTo(
-//            List.of("MOCK_PRODUCT_NAME_1", "MOCK_PRODUCT_NAME_2"));
-    }
+    @Mock
+    private CartRepository repository;
 
     @Test
-    void 장바구니_추가_응답_확인() {
+    void 유저의_장바구니_아이디를_가져온다() {
         // given
+        when(repository.getCartBy(1)).thenReturn(1L);
 
         // when
-//        List<CartApiDto.Response> result = service.addCarts(10);
+        long result = service.getCartsBy(1);
 
         // then
-//        assertThat(result.size()).isEqualTo(3);
-//        assertThat(result.stream().map(CartApiDto.Response::productName)).isEqualTo(
-//            List.of("MOCK_PRODUCT_NAME_1", "MOCK_PRODUCT_NAME_2", "MOCK_PRODUCT_NAME_3"));
+        assertThat(result).isEqualTo(1L);
     }
-
-    @Test
-    void 장바구니_삭제_응답_확인() {
-        // given
-//        CartServiceDto.Request cartServiceDto = CartServiceDto.Request.builder().cartId(2).build();
-        // when
-//        List<CartApiDto.Response> result = service.removeProductInCarts(cartServiceDto);
-        // then
-//        assertThat(result.size()).isEqualTo(1);
-//        assertThat(result.stream().map(CartApiDto.Response::productName)).isEqualTo(List.of("MOCK_PRODUCT_NAME_2"));
-    }
-
 }

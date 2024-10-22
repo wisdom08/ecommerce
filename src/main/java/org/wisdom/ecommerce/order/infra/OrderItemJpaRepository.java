@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface OrderItemJpaRepository extends JpaRepository<OrderItemEntity, Long> {
 
-  @Query(value = "select oi.product_id as productid, sum(oi.quantity) as totalquantity " +
+  @Query(value = "select oi.product_id" +
       "from order_item oi " +
       "where oi.created_at >= now() - interval 3 day " +
       "group by oi.product_id " +

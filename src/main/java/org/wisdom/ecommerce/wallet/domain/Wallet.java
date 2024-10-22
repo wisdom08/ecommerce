@@ -3,7 +3,7 @@ package org.wisdom.ecommerce.wallet.domain;
 import lombok.Builder;
 
 @Builder
-public record Wallet(long walletId, long userId, int balance) {
+public record Wallet(Long walletId, Long userId, int balance) {
 
   public void validateChargeAmount(Integer pointToCharge) {
     if (pointToCharge < 10000) {
@@ -16,5 +16,4 @@ public record Wallet(long walletId, long userId, int balance) {
       throw new IllegalArgumentException("잔고가 부족합니다.");
     }
   }
-
 }

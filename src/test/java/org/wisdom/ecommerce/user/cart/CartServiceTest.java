@@ -3,6 +3,7 @@ package org.wisdom.ecommerce.user.cart;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
+import lombok.val;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -23,11 +24,9 @@ class CartServiceTest {
   @Test
   void 유저의_장바구니_아이디를_가져온다() {
     // given
-    when(repository.getCartBy(1)).thenReturn(1L);
-
+    when(repository.getCartBy(1L)).thenReturn(1L);
     // when
-    long result = service.getCartsBy(1);
-
+    val result = service.getCartsBy(1L);
     // then
     assertThat(result).isEqualTo(1L);
   }

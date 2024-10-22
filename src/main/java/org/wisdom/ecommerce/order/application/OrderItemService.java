@@ -12,11 +12,11 @@ public class OrderItemService {
     this.repository = repository;
   }
 
-  public void save(long orderId, long productId, int quantity, int price) {
+  public void save(Long orderId, Long productId, int quantity, int price) {
     repository.save(orderId, productId, quantity, price);
   }
 
-  public List<Long> bestItemsForThreeDays() {
-    return repository.bestItemsForThreeDays();
+  public List<Long> bestProductsForThreeDays() {
+    return repository.bestProductsForThreeDays();
   }
 }

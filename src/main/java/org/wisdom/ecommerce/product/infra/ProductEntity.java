@@ -16,14 +16,14 @@ public class ProductEntity extends BaseTimeEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private long id;
+  private Long id;
   private String name;
   private int price;
   private int quantity;
 
   public static ProductEntity from(Product product) {
     ProductEntity productEntity = new ProductEntity();
-    productEntity.id = product.productId();
+    productEntity.id = product.id();
     productEntity.name = product.name();
     productEntity.price = product.price();
     return productEntity;
@@ -31,7 +31,7 @@ public class ProductEntity extends BaseTimeEntity {
 
   public Product toDomain() {
     return Product.builder()
-        .productId(id)
+        .id(id)
         .name(name)
         .price(price)
         .quantity(quantity)

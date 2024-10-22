@@ -2,6 +2,7 @@ package org.wisdom.ecommerce.product.application;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
+import org.wisdom.ecommerce.product.domain.Product;
 
 @Service
 public class ProductService {
@@ -12,12 +13,11 @@ public class ProductService {
     this.productRepository = productRepository;
   }
 
-  public ProductApplicationDto getProductBy(long productId) {
-    return ProductApplicationDto.toResponse(productRepository.getProductBy(productId));
+  public Product getProductBy(Long productId) {
+    return productRepository.getProductBy(productId);
   }
 
-  public List<ProductApplicationDto> getProductsBy(List<Long> productIds) {
-    return productRepository.getProductsBy(productIds).stream().map(ProductApplicationDto::from)
-        .toList();
+  public List<Product> getProductsBy(List<Long> productIds) {
+    return productRepository.getProductsBy(productIds);
   }
 }

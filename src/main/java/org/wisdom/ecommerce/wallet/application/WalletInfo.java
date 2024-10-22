@@ -4,18 +4,18 @@ import lombok.Builder;
 import org.wisdom.ecommerce.wallet.domain.Wallet;
 
 @Builder
-public record WalletInfoDto(Long walletId, Long userId, Integer balance) {
+public record WalletInfo(Long walletId, Long userId, Integer balance) {
 
-  public static WalletInfoDto from(Wallet wallet) {
-    return WalletInfoDto.builder()
+  public static WalletInfo from(Wallet wallet) {
+    return WalletInfo.builder()
         .walletId(wallet.walletId())
         .userId(wallet.userId())
         .balance(wallet.balance())
         .build();
   }
 
-  public static WalletInfoDto walletCharged(Wallet wallet, Integer amount) {
-    return WalletInfoDto.builder()
+  public static WalletInfo walletCharged(Wallet wallet, Integer amount) {
+    return WalletInfo.builder()
         .walletId(wallet.walletId())
         .userId(wallet.userId())
         .balance(wallet.balance() + amount)

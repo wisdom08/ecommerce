@@ -19,22 +19,22 @@ public class OrderEntity extends BaseTimeEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private long id;
+  private Long id;
 
-  private long userId;
+  private Long userId;
   @Enumerated(EnumType.STRING)
   private OrderStatus status;
 
   public OrderEntity() {
   }
 
-  public OrderEntity(long id, long userId, OrderStatus orderStatus) {
+  public OrderEntity(Long id, Long userId, OrderStatus orderStatus) {
     this.id = id;
     this.userId = userId;
     this.status = orderStatus;
   }
 
-  public static OrderEntity of(long userId) {
+  public static OrderEntity of(Long userId) {
     return OrderEntity.builder()
         .userId(userId)
         .status(OrderStatus.PAID)

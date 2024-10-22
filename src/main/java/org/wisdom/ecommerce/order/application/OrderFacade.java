@@ -1,12 +1,11 @@
 package org.wisdom.ecommerce.order.application;
 
+import lombok.val;
 import org.springframework.stereotype.Component;
 import org.wisdom.ecommerce.order.infra.DataPlatform;
-import org.wisdom.ecommerce.product.application.ProductApplicationDto;
 import org.wisdom.ecommerce.product.application.ProductService;
 import org.wisdom.ecommerce.user.application.UserService;
 import org.wisdom.ecommerce.wallet.application.WalletService;
-import org.wisdom.ecommerce.wallet.domain.Wallet;
 
 @Component
 public class OrderFacade {
@@ -29,14 +28,12 @@ public class OrderFacade {
     this.dataPlatform = dataPlatform;
   }
 
-  public void place(long userId, long productId, int quantity) {
+  public void place(Long userId, Long productId, Integer quantity) {
     userService.getUserBy(userId);
-    ProductApplicationDto product = productService.getProductBy(productId);
-    Wallet wallet = walletService.getWalletBy(userId);
-
+    val wallet = walletService.getWalletBy(userId);
+    val product = productService.getProductBy(productId);
     wallet.validatePayAmount(product.price());
-
-    long orderId = orderService.order(userId);
+    val orderId = orderService.order(userId);
     orderItemService.save(orderId, product.id(), quantity, product.price());
     dataPlatform.send();
   }

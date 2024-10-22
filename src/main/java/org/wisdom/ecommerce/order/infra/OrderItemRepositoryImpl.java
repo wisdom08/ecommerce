@@ -14,12 +14,12 @@ public class OrderItemRepositoryImpl implements OrderItemRepository {
   }
 
   @Override
-  public void save(long orderId, long productId, int quantity, int price) {
+  public void save(Long orderId, Long productId, int quantity, int price) {
     repository.save(OrderItemEntity.of(orderId, productId, quantity, price));
   }
 
   @Override
-  public List<Long> bestItemsForThreeDays() {
+  public List<Long> bestProductsForThreeDays() {
     return repository.bestItemsForThreeDays();
   }
 }

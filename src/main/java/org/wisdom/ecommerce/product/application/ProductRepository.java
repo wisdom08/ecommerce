@@ -7,7 +7,7 @@ import org.wisdom.ecommerce.product.domain.Product;
 @Repository
 public interface ProductRepository {
 
-  Product getProductBy(long productId);
+  Product getProductBy(Long productId);
 
   List<Product> getProductsBy(List<Long> productIds);
 }

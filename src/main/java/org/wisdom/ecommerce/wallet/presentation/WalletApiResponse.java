@@ -1,12 +1,12 @@
 package org.wisdom.ecommerce.wallet.presentation;
 
 import lombok.Builder;
-import org.wisdom.ecommerce.wallet.application.WalletInfoDto;
+import org.wisdom.ecommerce.wallet.application.WalletInfo;
 
 @Builder
-public record WalletApiResponse(long userId, int balance) {
+public record WalletApiResponse(Long userId, int balance) {
 
-  public static WalletApiResponse from(WalletInfoDto dto) {
+  public static WalletApiResponse from(WalletInfo dto) {
     return WalletApiResponse.builder()
         .userId(dto.userId())
         .balance(dto.balance())

@@ -13,7 +13,7 @@ public class OrderService {
   }
 
   @Transactional
-  public long order(long userId) {
+  public Long order(Long userId) {
     return orderRepository.place(userId);
   }
 }

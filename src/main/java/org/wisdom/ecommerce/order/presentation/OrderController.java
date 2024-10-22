@@ -20,9 +20,8 @@ public class OrderController {
   }
 
   @PatchMapping
-  public CommonApiResponse<OrderApiDto.Response> order(
-      @RequestBody OrderApiDto.Request orderRequest) {
-    orderFacade.place(orderRequest.userId(), orderRequest.productId(), orderRequest.quantity());
+  public CommonApiResponse<OrderApiResponse> order(@RequestBody OrderApiRequest request) {
+    orderFacade.place(request.userId(), request.productId(), request.quantity());
     return CommonApiResponse.success(null);
   }
 }

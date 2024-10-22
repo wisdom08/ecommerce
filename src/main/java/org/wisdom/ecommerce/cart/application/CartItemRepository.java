@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface CartItemRepository {
 
-    List<CartItem> getCartItems(long validCartId);
+  List<CartItem> getCartItems(Long validCartId);
 
-    void removeItem(long cartId, long productId);
+  void removeItem(Long cartId, Long productId);
 
-    void save(long validCartId, long productId, int quantity);
+  void save(Long validCartId, Long productId, int quantity);
 }

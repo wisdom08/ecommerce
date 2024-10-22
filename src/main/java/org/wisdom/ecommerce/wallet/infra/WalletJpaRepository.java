@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface WalletJpaRepository extends JpaRepository<WalletEntity, Long> {
 
-  Optional<WalletEntity> findByUserId(long userId);
+  Optional<WalletEntity> findByUserId(Long userId);
 
   @Lock(LockModeType.PESSIMISTIC_WRITE)
   @Transactional

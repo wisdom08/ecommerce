@@ -5,13 +5,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class CartService {
 
-    private final CartRepository cartRepository;
+  private final CartRepository cartRepository;
 
-    public CartService(CartRepository cartRepository) {
-        this.cartRepository = cartRepository;
-    }
+  public CartService(CartRepository cartRepository) {
+    this.cartRepository = cartRepository;
+  }
 
-    public long getCartsBy(long userId) {
-        return cartRepository.getCartBy(userId);
-    }
+  public Long getCartsBy(Long userId) {
+    return cartRepository.getCartBy(userId);
+  }
 }

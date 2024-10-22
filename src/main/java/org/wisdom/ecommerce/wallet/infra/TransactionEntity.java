@@ -20,8 +20,8 @@ public class TransactionEntity extends BaseTimeEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private long id;
-  private long walletId;
+  private Long id;
+  private Long walletId;
 
   private int amount;
 
@@ -31,14 +31,14 @@ public class TransactionEntity extends BaseTimeEntity {
   public TransactionEntity() {
   }
 
-  public TransactionEntity(long id, long walletId, int amount, TransactionType type) {
+  public TransactionEntity(Long id, Long walletId, int amount, TransactionType type) {
     this.id = id;
     this.walletId = walletId;
     this.amount = amount;
     this.type = type;
   }
 
-  public static TransactionEntity chargeOf(long walletId, int amount) {
+  public static TransactionEntity chargeOf(Long walletId, int amount) {
     return TransactionEntity.builder()
         .walletId(walletId)
         .amount(amount)

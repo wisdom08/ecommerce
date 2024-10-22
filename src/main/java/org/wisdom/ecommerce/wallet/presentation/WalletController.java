@@ -25,8 +25,8 @@ public class WalletController {
 
   @Operation(summary = "포인트 충전")
   @PatchMapping()
-  public CommonApiResponse<WalletApiResponse> chargePoint(@RequestBody WalletApiRequest walletRequest) {
-    val wallet = walletFacade.charge(walletRequest.userId(), walletRequest.amount());
+  public CommonApiResponse<WalletApiResponse> chargePoint(@RequestBody WalletApiRequest request) {
+    val wallet = walletFacade.charge(request.userId(), request.amount());
     return CommonApiResponse.success(WalletApiResponse.from(wallet));
   }
 

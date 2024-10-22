@@ -1,6 +1,7 @@
 package org.wisdom.ecommerce.product.application;
 
 import java.util.List;
+import lombok.val;
 import org.springframework.stereotype.Component;
 import org.wisdom.ecommerce.order.application.OrderItemService;
 
@@ -10,23 +11,23 @@ public class ProductFacade {
   private final OrderItemService orderItemService;
   private final ProductService productService;
 
-
   public ProductFacade(OrderItemService orderItemService, ProductService productService) {
     this.orderItemService = orderItemService;
     this.productService = productService;
   }
 
-  public ProductApplicationDto getProductBy(long productId) {
-    return productService.getProductBy(productId);
+  public ProductInfo getProductBy(Long productId) {
+    return ProductInfo.from(productService.getProductBy(productId));
   }
 
-  public List<Long> getBestOfProducts() {
-    return orderItemService.bestItemsForThreeDays();
+  public List<ProductInfo> getBestOfProducts() {
+    val bestProductIds = orderItemService.bestProductsForThreeDays();
+    val products = productService.getProductsBy(bestProductIds);
+    return products.stream().map(ProductInfo::from).toList();
   }
 
-  public List<ProductApplicationDto> getProductsBy(List<Long> productIds) {
-    return productService.getProductsBy(productIds);
+  public List<ProductInfo> getProductsBy(List<Long> productIds) {
+    return productService.getProductsBy(productIds).stream().map(ProductInfo::from)
+        .toList();
   }
-
-
 }

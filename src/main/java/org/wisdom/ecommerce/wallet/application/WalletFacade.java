@@ -18,15 +18,15 @@ public class WalletFacade {
     this.transactionService = transactionService;
   }
 
-  public WalletInfoDto getWalletBalance(Long userId) {
+  public WalletInfo getWalletBalance(Long userId) {
     val validUserId = userService.getUserBy(userId);
-    return WalletInfoDto.from(walletService.getWalletBy(validUserId));
+    return WalletInfo.from(walletService.getWalletBy(validUserId));
   }
 
-  public WalletInfoDto charge(Long userId, Integer amount) {
+  public WalletInfo charge(Long userId, Integer amount) {
     val validWallet = walletService.getWalletBy(userService.getUserBy(userId));
     walletService.charge(validWallet, amount);
     transactionService.saveTransaction(validWallet.walletId(), amount);
-    return WalletInfoDto.walletCharged(validWallet, amount);
+    return WalletInfo.walletCharged(validWallet, amount);
   }
 }

@@ -14,7 +14,7 @@ public class OrderRepositoryImpl implements OrderRepository {
 
 
   @Override
-  public long place(long userId) {
+  public Long place(Long userId) {
     return repository.save(OrderEntity.of(userId)).getId();
   }
 }

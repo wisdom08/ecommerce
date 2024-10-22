@@ -16,7 +16,7 @@ public class ProductRepositoryImpl implements ProductRepository {
   }
 
   @Override
-  public Product getProductBy(long productId) {
+  public Product getProductBy(Long productId) {
     return productJpaRepository.findById(productId)
         .orElseThrow(() -> new EntityNotFoundException(productId + "의 상품이 없습니다"))
         .toDomain();

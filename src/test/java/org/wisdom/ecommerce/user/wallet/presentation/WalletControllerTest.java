@@ -9,7 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.wisdom.ecommerce.wallet.application.WalletFacade;
-import org.wisdom.ecommerce.wallet.application.WalletInfoDto;
+import org.wisdom.ecommerce.wallet.application.WalletInfo;
 import org.wisdom.ecommerce.wallet.presentation.WalletApiRequest;
 import org.wisdom.ecommerce.wallet.presentation.WalletController;
 
@@ -45,7 +45,7 @@ class WalletControllerTest {
     verify(facade).charge(userId, amount);
   }
 
-  private WalletInfoDto getWalletInfoDto(Integer amount) {
-    return WalletInfoDto.builder().userId(userId).balance(amount).build();
+  private WalletInfo getWalletInfoDto(Integer amount) {
+    return WalletInfo.builder().userId(userId).balance(amount).build();
   }
 }

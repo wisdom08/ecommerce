@@ -14,7 +14,7 @@ public class UserRepositoryImpl implements UserRepository {
   }
 
   @Override
-  public long getUserBy(long userId) {
+  public Long getUserBy(Long userId) {
     return repository.findById(userId)
         .orElseThrow(() -> new EntityNotFoundException(userId + "의 유저가 없습니다")).getId();
   }

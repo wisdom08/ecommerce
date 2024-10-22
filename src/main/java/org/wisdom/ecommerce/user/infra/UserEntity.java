@@ -17,7 +17,7 @@ public class UserEntity extends BaseTimeEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private long id;
+  private Long id;
   private String email;
 
   public User toDomain() {

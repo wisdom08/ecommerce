@@ -4,5 +4,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CartRepository {
-    long getCartBy(long userId);
+
+  Long getCartBy(Long userId);
 }

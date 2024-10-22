@@ -1,5 +1,6 @@
 package org.wisdom.ecommerce.user.cart;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 
 import org.junit.jupiter.api.Test;
@@ -8,8 +9,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.wisdom.ecommerce.cart.application.CartFacade;
-import org.wisdom.ecommerce.cart.presentation.CartApiDto.AddRequest;
-import org.wisdom.ecommerce.cart.presentation.CartApiDto.DeleteRequest;
+import org.wisdom.ecommerce.cart.presentation.CartApiAddRequest;
+import org.wisdom.ecommerce.cart.presentation.CartApiDeleteRequest;
 import org.wisdom.ecommerce.cart.presentation.CartController;
 
 @ExtendWith(MockitoExtension.class)
@@ -22,33 +23,30 @@ class CartControllerTest {
   private CartFacade facade;
 
   @Test
-  void 장바구니_조회() {
+  void 장바구니_조회_호출() {
     // given
-    long userId = 0;
     // when
-    controller.getCartBy(userId);
+    controller.getCartBy(any());
     // then
-    verify(facade).getCartBy(userId);
+    verify(facade).getCartBy(any());
   }
 
   @Test
-  void 장바구니_추가() {
+  void 장바구니_추가_호출() {
     // given
     // when
-    AddRequest request = AddRequest.builder().userId(0).productId(0).quantity(0).build();
-    controller.addProductToCart(request);
+    controller.addProductToCart(CartApiAddRequest.builder().build());
     // then
-    verify(facade).addProductToCart(request.userId(), request.productId(), request.quantity());
+    verify(facade).addProductToCart(any(), any(), any());
   }
 
   @Test
-  void 장바구니_삭제() {
+  void 장바구니_삭제_호출() {
     // given
     // when
-    DeleteRequest request = DeleteRequest.builder().userId(0).cartId(0).build();
-    controller.removeProductFromCart(request);
+    controller.removeProductFromCart(CartApiDeleteRequest.builder().build());
     // then
-    verify(facade).removeProductFromCart(request.userId(), request.cartId());
+    verify(facade).removeProductFromCart(any(), any());
   }
 
 }

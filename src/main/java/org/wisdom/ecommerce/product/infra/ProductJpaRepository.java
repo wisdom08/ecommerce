@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.Lock;
 public interface ProductJpaRepository extends JpaRepository<ProductEntity, Long> {
 
   @Lock(LockModeType.PESSIMISTIC_WRITE)
-  Optional<ProductEntity> findById(long productId);
+  Optional<ProductEntity> findById(Long productId);
 }

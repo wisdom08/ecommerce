@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.wisdom.ecommerce.common.model.CommonApiResponse;
 import org.wisdom.ecommerce.product.application.ProductFacade;
 
-@Tag(name = "상품")
+@Tag(name = "[상품]")
 @RequestMapping("/api/v1/products")
 @RestController
 public class ProductController {

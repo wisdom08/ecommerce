@@ -1,4 +1,4 @@
-package org.wisdom.ecommerce.user.wallet.presentation;
+package org.wisdom.ecommerce.wallet.presentation;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -10,8 +10,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.wisdom.ecommerce.wallet.application.WalletFacade;
 import org.wisdom.ecommerce.wallet.application.WalletInfo;
-import org.wisdom.ecommerce.wallet.presentation.WalletApiRequest;
-import org.wisdom.ecommerce.wallet.presentation.WalletController;
 
 @ExtendWith(MockitoExtension.class)
 class WalletControllerTest {

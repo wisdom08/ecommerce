@@ -1,4 +1,4 @@
-package org.wisdom.ecommerce.user.wallet.application;
+package org.wisdom.ecommerce.wallet.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -6,19 +6,17 @@ import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import lombok.val;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.wisdom.ecommerce.wallet.application.WalletRepository;
-import org.wisdom.ecommerce.wallet.application.WalletService;
 import org.wisdom.ecommerce.wallet.domain.Wallet;
 
 @ExtendWith(MockitoExtension.class)
 class WalletServiceTest {
 
-  private final Long userId = 0L;
   private final Integer amount = 100000;
   @InjectMocks
   private WalletService service;
@@ -28,6 +26,7 @@ class WalletServiceTest {
   @Test
   void 포인트_조회_응답_확인() {
     // given
+    val userId = 0L;
     when(repository.getWalletBy(userId)).thenReturn(Wallet.builder().userId(userId).balance(amount).build());
     // when
     Wallet result = service.getWalletBy(userId);

@@ -1,6 +1,7 @@
 package org.wisdom.ecommerce.wallet.infra;
 
 import jakarta.persistence.EntityNotFoundException;
+import lombok.val;
 import org.springframework.stereotype.Repository;
 import org.wisdom.ecommerce.wallet.application.WalletRepository;
 import org.wisdom.ecommerce.wallet.domain.Wallet;
@@ -22,7 +23,9 @@ public class WalletRepositoryImpl implements WalletRepository {
   }
 
   @Override
-  public void updateBalance(Long walletId, Integer amount) {
-    walletJpaRepository.updateBalance(walletId, amount);
+  public void updateBalance(Wallet wallet, Integer amount) {
+    wallet.validatePayAmount(amount);
+    val newBalance = wallet.balance() - amount;
+    walletJpaRepository.updateBalance(wallet.walletId(), newBalance);
   }
 }

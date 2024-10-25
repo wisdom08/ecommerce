@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class DataPlatform {
 
-    public boolean send() {
-        return true;
-    }
+  public boolean send() {
+    return true;
+  }
 }

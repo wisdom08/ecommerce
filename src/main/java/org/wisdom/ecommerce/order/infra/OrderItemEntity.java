@@ -15,32 +15,32 @@ import org.wisdom.ecommerce.config.BaseTimeEntity;
 @Entity
 public class OrderItemEntity extends BaseTimeEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id;
 
-    private long orderId;
-    private long productId;
-    private int quantity;
-    private int unitPrice;
+  private Long orderId;
+  private Long productId;
+  private int quantity;
+  private int unitPrice;
 
-    public OrderItemEntity() {
-    }
+  public OrderItemEntity() {
+  }
 
-    public OrderItemEntity(long id, long orderId, long productId, int quantity, int price) {
-        this.id = id;
-        this.orderId = orderId;
-        this.productId = productId;
-        this.quantity = quantity;
-        this.unitPrice = price;
-    }
+  public OrderItemEntity(Long id, Long orderId, Long productId, int quantity, int price) {
+    this.id = id;
+    this.orderId = orderId;
+    this.productId = productId;
+    this.quantity = quantity;
+    this.unitPrice = price;
+  }
 
-    public static OrderItemEntity of(long orderId, long productId, int quantity, int price) {
-        return OrderItemEntity.builder()
-            .orderId(orderId)
-            .productId(productId)
-            .quantity(quantity)
-            .unitPrice(price)
-            .build();
-    }
+  public static OrderItemEntity of(Long orderId, Long productId, int quantity, int price) {
+    return OrderItemEntity.builder()
+        .orderId(orderId)
+        .productId(productId)
+        .quantity(quantity)
+        .unitPrice(price)
+        .build();
+  }
 }

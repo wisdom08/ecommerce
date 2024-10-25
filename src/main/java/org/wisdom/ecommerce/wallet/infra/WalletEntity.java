@@ -6,44 +6,41 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Builder;
-import lombok.Getter;
 import org.wisdom.ecommerce.config.BaseTimeEntity;
 import org.wisdom.ecommerce.wallet.domain.Wallet;
 
 @Builder
-@Getter
 @Table(name = "wallet")
 @Entity
 public class WalletEntity extends BaseTimeEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
-    private long userId;
-    private int balance;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id;
+  private Long userId;
+  private Integer balance;
 
-    public WalletEntity() {
+  public WalletEntity() {
+  }
 
-    }
+  public WalletEntity(Long id, Long userId, Integer balance) {
+    this.id = id;
+    this.userId = userId;
+    this.balance = balance;
+  }
 
-    public WalletEntity(long id, long userId, int balance) {
-        this.id = id;
-        this.userId = userId;
-        this.balance = balance;
-    }
+  public static WalletEntity of(Long userId, Integer amount) {
+    return WalletEntity.builder()
+        .userId(userId)
+        .balance(amount)
+        .build();
+  }
 
-    public static WalletEntity of(long userId, int amount) {
-        return WalletEntity.builder()
-                .userId(userId)
-                .balance(amount)
-                .build();
-    }
-
-    public Wallet toDomain() {
-        return Wallet.builder()
-                .userId(userId)
-                .walletId(id)
-                .balance(balance)
-                .build();
-    }
+  public Wallet toDomain() {
+    return Wallet.builder()
+        .userId(userId)
+        .walletId(id)
+        .balance(balance)
+        .build();
+  }
 }

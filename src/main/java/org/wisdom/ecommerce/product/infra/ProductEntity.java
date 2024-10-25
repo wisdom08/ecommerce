@@ -1,6 +1,10 @@
 package org.wisdom.ecommerce.product.infra;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import org.wisdom.ecommerce.config.BaseTimeEntity;
 import org.wisdom.ecommerce.product.domain.Product;
@@ -10,26 +14,27 @@ import org.wisdom.ecommerce.product.domain.Product;
 @Entity
 public class ProductEntity extends BaseTimeEntity {
 
-  @Id @GeneratedValue(strategy = GenerationType.AUTO)
-  private long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id;
   private String name;
   private int price;
   private int quantity;
 
-  public Product toDomain() {
-    return Product.builder()
-            .productId(id)
-            .name(name)
-            .price(price)
-            .quantity(quantity)
-            .build();
-  }
-
   public static ProductEntity from(Product product) {
     ProductEntity productEntity = new ProductEntity();
-    productEntity.id = product.productId();
+    productEntity.id = product.id();
     productEntity.name = product.name();
     productEntity.price = product.price();
     return productEntity;
+  }
+
+  public Product toDomain() {
+    return Product.builder()
+        .id(id)
+        .name(name)
+        .price(price)
+        .quantity(quantity)
+        .build();
   }
 }

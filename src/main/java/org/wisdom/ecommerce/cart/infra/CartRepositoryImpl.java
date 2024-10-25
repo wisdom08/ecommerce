@@ -6,14 +6,14 @@ import org.wisdom.ecommerce.cart.application.CartRepository;
 @Repository
 public class CartRepositoryImpl implements CartRepository {
 
-    private final CartJpaRepository repository;
+  private final CartJpaRepository repository;
 
-    public CartRepositoryImpl(CartJpaRepository repository) {
-        this.repository = repository;
-    }
+  public CartRepositoryImpl(CartJpaRepository repository) {
+    this.repository = repository;
+  }
 
-    @Override
-    public long getCartBy(long userId) {
-        return repository.findByUserId(userId);
-    }
+  @Override
+  public Long getCartBy(Long userId) {
+    return repository.findByUserId(userId);
+  }
 }

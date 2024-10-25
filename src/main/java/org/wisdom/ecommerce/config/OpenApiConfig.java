@@ -8,10 +8,11 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class OpenApiConfig {
-    @Bean
-    public OpenAPI openAPI() {
-        return new OpenAPI()
-                .components(new Components())
-                .info(new Info().title("ecommerce API Document").version("v0.0.1"));
-    }
+
+  @Bean
+  public OpenAPI openAPI() {
+    return new OpenAPI()
+        .components(new Components())
+        .info(new Info().title("ecommerce API Document").version("v0.0.1"));
+  }
 }

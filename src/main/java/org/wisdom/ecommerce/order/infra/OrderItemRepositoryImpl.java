@@ -7,19 +7,19 @@ import org.wisdom.ecommerce.order.application.OrderItemRepository;
 @Repository
 public class OrderItemRepositoryImpl implements OrderItemRepository {
 
-    private final OrderItemJpaRepository repository;
+  private final OrderItemJpaRepository repository;
 
-    public OrderItemRepositoryImpl(OrderItemJpaRepository repository) {
-        this.repository = repository;
-    }
+  public OrderItemRepositoryImpl(OrderItemJpaRepository repository) {
+    this.repository = repository;
+  }
 
-    @Override
-    public void save(long orderId, long productId, int quantity, int price) {
-        repository.save(OrderItemEntity.of(orderId, productId, quantity, price));
-    }
+  @Override
+  public void save(Long orderId, Long productId, int quantity, int price) {
+    repository.save(OrderItemEntity.of(orderId, productId, quantity, price));
+  }
 
-    @Override
-    public List<Long> bestItemsForThreeDays() {
-        return repository.bestItemsForThreeDays();
-    }
+  @Override
+  public List<Long> bestProductsForThreeDays() {
+    return repository.bestItemsForThreeDays();
+  }
 }

@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface CartItemJpaRepository extends JpaRepository<CartItemEntity, Long> {
 
-    List<CartItemEntity> findAllByCartId(long validCartId);
+  List<CartItemEntity> findAllByCartId(Long validCartId);
 
-    void deleteByCartIdAndProductId(long cartId, long productId);
+  void deleteByCartIdAndProductId(Long cartId, Long productId);
 }

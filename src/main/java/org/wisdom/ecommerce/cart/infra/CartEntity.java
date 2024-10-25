@@ -10,10 +10,10 @@ import org.wisdom.ecommerce.config.BaseTimeEntity;
 @Entity
 public class CartEntity extends BaseTimeEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
-    private long userId;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id;
+  private Long userId;
 
 
 }

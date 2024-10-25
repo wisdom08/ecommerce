@@ -1,14 +1,15 @@
 package org.wisdom.ecommerce.product.application;
 
+import java.util.List;
 import org.springframework.stereotype.Repository;
 import org.wisdom.ecommerce.product.domain.Product;
-
-import java.util.List;
 
 @Repository
 public interface ProductRepository {
 
-  Product getProductBy(long productId);
+  Product getProductBy(Long productId);
 
   List<Product> getProductsBy(List<Long> productIds);
+
+  void updateStock(Product product, Integer quantity);
 }

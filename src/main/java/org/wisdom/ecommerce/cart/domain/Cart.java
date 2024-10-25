@@ -1,4 +1,5 @@
 package org.wisdom.ecommerce.cart.domain;
 
-public record Cart() {
+public record Cart(Long id, Long userId, Long cartId) {
+
 }

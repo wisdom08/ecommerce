@@ -6,20 +6,23 @@ import org.wisdom.ecommerce.wallet.domain.Wallet;
 @Service
 public class WalletService {
 
-    private final WalletRepository walletRepository;
+  private final WalletRepository walletRepository;
 
-    public WalletService(WalletRepository walletRepository) {
-        this.walletRepository = walletRepository;
-    }
+  public WalletService(WalletRepository walletRepository) {
+    this.walletRepository = walletRepository;
+  }
 
 
-    public Wallet getWalletBy(long validUserId) {
-        return walletRepository.getWalletBy(validUserId);
-    }
+  public Wallet getWalletBy(Long validUserId) {
+    return walletRepository.getWalletBy(validUserId);
+  }
 
-    public WalletServiceDto charge(Wallet wallet, int amount) {
-        wallet.validateChargeAmount(amount);
-        walletRepository.updateBalance(wallet.walletId(), amount + wallet.balance());
-        return WalletServiceDto.walletCharged(wallet, amount);
-    }
+  public void charge(Wallet wallet, Integer amount) {
+    wallet.validateChargeAmount(amount);
+    walletRepository.updateBalance(wallet, amount + wallet.balance());
+  }
+
+  public void updateBalance(Wallet wallet, int price) {
+    walletRepository.updateBalance(wallet, price);
+  }
 }

@@ -5,13 +5,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class TransactionService {
 
-    private final TransactionRepository repository;
+  private final TransactionRepository repository;
 
-    public TransactionService(TransactionRepository repository) {
-        this.repository = repository;
-    }
+  public TransactionService(TransactionRepository repository) {
+    this.repository = repository;
+  }
 
-    public void saveTransaction(long walletId, int amount) {
-        repository.save(walletId, amount);
-    }
+  public void saveTransaction(Long walletId, Integer amount) {
+    repository.save(walletId, amount);
+  }
 }

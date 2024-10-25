@@ -5,9 +5,9 @@ import lombok.Builder;
 import org.wisdom.ecommerce.user.domain.User;
 
 @Builder
-public record UserServiceDto(long userId, String email) {
+public record UserServiceDto(Long userId, String email) {
 
-    public static UserServiceDto from(User user) {
-        return UserServiceDto.builder().userId(user.userId()).build();
-    }
+  public static UserServiceDto from(User user) {
+    return UserServiceDto.builder().userId(user.userId()).build();
+  }
 }

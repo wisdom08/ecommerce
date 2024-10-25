@@ -1,59 +1,56 @@
 package org.wisdom.ecommerce.cart.application;
 
-import org.springframework.stereotype.Component;
-import org.wisdom.ecommerce.product.application.ProductService;
-import org.wisdom.ecommerce.product.application.ProductServiceDto;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import lombok.val;
+import org.springframework.stereotype.Component;
+import org.wisdom.ecommerce.product.application.ProductService;
+import org.wisdom.ecommerce.product.domain.Product;
 
 @Component
 public class CartFacade {
 
-    private final CartService cartService;
-    private final CartItemService cartItemService;
-    private final ProductService productService;
+  private final CartService cartService;
+  private final CartItemService cartItemService;
+  private final ProductService productService;
 
-    public CartFacade(CartService cartService, CartItemService cartItemService, ProductService productService) {
-        this.cartService = cartService;
-        this.cartItemService = cartItemService;
-        this.productService = productService;
-    }
+  public CartFacade(CartService cartService, CartItemService cartItemService, ProductService productService) {
+    this.cartService = cartService;
+    this.cartItemService = cartItemService;
+    this.productService = productService;
+  }
 
-    public List<CartServiceDto> getCartBy(long userId) {
-        long validCartId = cartService.getCartsBy(userId);
-        List<CartServiceDto> cartItems = cartItemService.getCartItems(validCartId);
+  public List<CartInfo> getCartBy(Long userId) {
+    val validCartId = cartService.getCartsBy(userId);
+    val cartItems = cartItemService.getCartItems(validCartId);
+    val productIds = cartItems.stream().map(CartInfo::productId).toList();
+    val products = productService.getProductsBy(productIds);
 
-        List<Long> productIds = cartItems.stream().map(CartServiceDto::productId).toList();
-        List<ProductServiceDto> products = productService.getProductsBy(productIds);
+    Map<Long, Product> productIdToProductMap = products.stream()
+        .collect(Collectors.toMap(Product::id, product -> product));
 
+    ArrayList<CartInfo> res = new ArrayList<>();
+    cartItems.forEach(cartItem -> {
+      val product = productIdToProductMap.get(cartItem.productId());
+      if (product != null) {
+        res.add(CartInfo.from(product, cartItem));
+      }
+    });
 
-        Map<Long, ProductServiceDto> productIdToProductMap = products.stream()
-                .collect(Collectors.toMap(ProductServiceDto::id, product -> product));
+    return res;
+  }
 
-        ArrayList<CartServiceDto> res = new ArrayList<>();
-        cartItems.forEach(cartItem -> {
-            ProductServiceDto product = productIdToProductMap.get(cartItem.productId());
-            if (product != null) {
-                res.add(CartServiceDto.from(product, cartItem));
-            }
-        });
+  public void removeProductFromCart(Long userId, Long productId) {
+    Long validCartId = cartService.getCartsBy(userId);
+    cartItemService.removeItem(validCartId, productId);
+  }
 
-        return res;
-    }
+  public void addProductToCart(Long userId, Long productId, Integer quantity) {
+    Long validCartId = cartService.getCartsBy(userId);
+    Long validProductId = productService.getProductBy(productId).id();
 
-    public void removeProductFromCart(long userId, long productId) {
-        long validCartId = cartService.getCartsBy(userId);
-        cartItemService.removeItem(validCartId, productId);
-    }
-
-    public void addProductToCart(long userId, long productId, int quantity) {
-        long validCartId = cartService.getCartsBy(userId);
-        long validProductId = productService.getProductBy(productId).productId();
-
-        cartItemService.addItem(validCartId, validProductId, quantity);
-
-    }
+    cartItemService.addItem(validCartId, validProductId, quantity);
+  }
 }

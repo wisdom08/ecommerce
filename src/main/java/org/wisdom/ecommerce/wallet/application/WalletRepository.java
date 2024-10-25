@@ -8,5 +8,5 @@ public interface WalletRepository {
 
   Wallet getWalletBy(Long validUserId);
 
-  void updateBalance(Long walletId, Integer amount);
+  void updateBalance(Wallet wallet, Integer amount);
 }

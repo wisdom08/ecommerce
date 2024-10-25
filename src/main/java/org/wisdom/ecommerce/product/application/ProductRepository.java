@@ -10,4 +10,6 @@ public interface ProductRepository {
   Product getProductBy(Long productId);
 
   List<Product> getProductsBy(List<Long> productIds);
+
+  void updateStock(Product product, Integer quantity);
 }

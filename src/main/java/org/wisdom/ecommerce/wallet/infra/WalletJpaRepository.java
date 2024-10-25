@@ -11,11 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface WalletJpaRepository extends JpaRepository<WalletEntity, Long> {
 
+  @Lock(LockModeType.PESSIMISTIC_WRITE)
   Optional<WalletEntity> findByUserId(Long userId);
 
-  @Lock(LockModeType.PESSIMISTIC_WRITE)
   @Transactional
   @Modifying
-  @Query(value = "update WalletEntity w SET w.balance = :balanceCharged where w.id = :walletId")
-  void updateBalance(@Param("walletId") Long walletId, @Param("balanceCharged") Integer balanceCharged);
+  @Query("update WalletEntity w SET w.balance = :newBalance where w.id = :id")
+  void updateBalance(@Param("id") Long id, @Param("newBalance") int newBalance);
 }

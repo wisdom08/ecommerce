@@ -20,4 +20,8 @@ public class ProductService {
   public List<Product> getProductsBy(List<Long> productIds) {
     return productRepository.getProductsBy(productIds);
   }
+
+  public void updateStock(Product product, Integer quantity) {
+    productRepository.updateStock(product, quantity);
+  }
 }

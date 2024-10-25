@@ -27,7 +27,8 @@ public class RateLimitInterceptor implements HandlerInterceptor {
   public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
     val userId = getUserIdFromJson(getRequestJsonBody(request));
     if (userId == null) {
-      log.warn("Request with missing userId: body={}, IP={}", getRequestJsonBody(request), request.getRemoteAddr());
+      log.warn("[RateLimitInterceptor] Request with missing userId: body={}, IP={}", getRequestJsonBody(request),
+          request.getRemoteAddr());
       response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
       response.setContentType("application/json");
       response.setCharacterEncoding("UTF-8");

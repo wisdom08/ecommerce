@@ -2,6 +2,7 @@ package org.wisdom.ecommerce.order.application;
 
 import lombok.val;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.wisdom.ecommerce.order.infra.DataPlatform;
 import org.wisdom.ecommerce.product.application.ProductService;
 import org.wisdom.ecommerce.user.application.UserService;
@@ -32,6 +33,7 @@ public class OrderFacade {
     this.transactionService = transactionService;
   }
 
+  @Transactional
   public void place(Long userId, Long productId, Integer quantity) {
     userService.getUserBy(userId);
     val wallet = walletService.getWalletBy(userId);

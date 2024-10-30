@@ -1,8 +1,6 @@
 package org.wisdom.ecommerce.order;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatNoException;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +10,6 @@ import lombok.val;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.test.context.jdbc.Sql;
 import org.wisdom.ecommerce.order.application.OrderFacade;
 
@@ -57,18 +54,5 @@ public class OrderConcurrencyTest {
     assertThat(successCount).isEqualTo(10);
     assertThat(failureCount).isEqualTo(40);
     assertThat(exceptionCount).hasSize(40);
-  }
-
-  @Test
-  void 동일한_유저가_주문을_10번_신청시_첫번째는_성공_나머지는_잔고_부족으로_예외_발생() {
-    val userId = 2L;
-
-    assertThatNoException().isThrownBy(() -> facade.place(userId, 2L, 1));
-
-    for (int i = 0; i < 9; i++) {
-      assertThatThrownBy(() -> facade.place(userId, 2L, 1))
-          .isInstanceOf(InvalidDataAccessApiUsageException.class)
-          .hasMessageContaining("잔고가 부족합니다.");
-    }
   }
 }

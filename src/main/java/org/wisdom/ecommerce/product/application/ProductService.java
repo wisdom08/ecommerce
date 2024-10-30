@@ -22,6 +22,7 @@ public class ProductService {
   }
 
   public void updateStock(Product product, Integer quantity) {
+    product.validateQuantity(quantity);
     productRepository.updateStock(product, quantity);
   }
 }

@@ -36,11 +36,11 @@ class WalletServiceTest {
   }
 
   @Test
-  void 포인트_충전을_하기_위해_walletRepository의_updateBalance를_호출한다() {
+  void 포인트_충전을_하기_위해_walletRepository의_plusBalance를_호출한다() {
     // given
     // when
     service.charge(Wallet.builder().build(), amount);
     // then
-    verify(repository, only()).updateBalance(any(), any());
+    verify(repository, only()).plusBalance(any(), any());
   }
 }

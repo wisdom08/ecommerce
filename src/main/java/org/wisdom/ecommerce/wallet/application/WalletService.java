@@ -19,10 +19,11 @@ public class WalletService {
 
   public void charge(Wallet wallet, Integer amount) {
     wallet.validateChargeAmount(amount);
-    walletRepository.updateBalance(wallet, amount + wallet.balance());
+    walletRepository.plusBalance(wallet, amount + wallet.balance());
   }
 
-  public void updateBalance(Wallet wallet, int price) {
-    walletRepository.updateBalance(wallet, price);
+  public void minusBalance(Wallet wallet, int price) {
+    wallet.validatePayAmount(price);
+    walletRepository.minusBalance(wallet, wallet.balance() - price);
   }
 }

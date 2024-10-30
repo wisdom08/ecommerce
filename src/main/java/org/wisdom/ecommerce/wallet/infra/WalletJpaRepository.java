@@ -10,7 +10,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 public interface WalletJpaRepository extends JpaRepository<WalletEntity, Long> {
-
+  
+  @Transactional
   @Lock(LockModeType.PESSIMISTIC_WRITE)
   Optional<WalletEntity> findByUserId(Long userId);
 

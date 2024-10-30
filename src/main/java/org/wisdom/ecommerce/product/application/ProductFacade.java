@@ -25,9 +25,4 @@ public class ProductFacade {
     val products = productService.getProductsBy(bestProductIds);
     return products.stream().map(ProductInfo::from).toList();
   }
-
-  public List<ProductInfo> getProductsBy(List<Long> productIds) {
-    return productService.getProductsBy(productIds).stream().map(ProductInfo::from)
-        .toList();
-  }
 }

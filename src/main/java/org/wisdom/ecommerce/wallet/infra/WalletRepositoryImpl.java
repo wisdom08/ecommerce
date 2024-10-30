@@ -23,8 +23,13 @@ public class WalletRepositoryImpl implements WalletRepository {
   }
 
   @Override
-  public void updateBalance(Wallet wallet, Integer amount) {
-    wallet.validatePayAmount(amount);
+  public void plusBalance(Wallet wallet, Integer amount) {
+    val newBalance = wallet.balance() + amount;
+    walletJpaRepository.updateBalance(wallet.walletId(), newBalance);
+  }
+
+  @Override
+  public void minusBalance(Wallet wallet, Integer amount) {
     val newBalance = wallet.balance() - amount;
     walletJpaRepository.updateBalance(wallet.walletId(), newBalance);
   }

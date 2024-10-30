@@ -11,11 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface ProductJpaRepository extends JpaRepository<ProductEntity, Long> {
 
+  @Transactional
   @Lock(LockModeType.PESSIMISTIC_WRITE)
   Optional<ProductEntity> findById(Long productId);
 
-  @Modifying
   @Transactional
+  @Modifying
   @Query("update ProductEntity p SET p.quantity = :newStock where p.id = :id")
   void updateStock(@Param("id") Long id, @Param("newStock") int newStock);
 }

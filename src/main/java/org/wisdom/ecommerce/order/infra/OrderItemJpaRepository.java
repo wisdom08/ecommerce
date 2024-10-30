@@ -6,11 +6,11 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface OrderItemJpaRepository extends JpaRepository<OrderItemEntity, Long> {
 
-  @Query(value = "select oi.product_id" +
-      "from order_item oi " +
-      "where oi.created_at >= now() - interval 3 day " +
-      "group by oi.product_id " +
-      "order by totalquantity desc " +
-      "limit 5", nativeQuery = true)
+  @Query(value = "SELECT oi.product_id " +
+      "FROM order_item oi " +
+      "WHERE oi.created_at >= NOW() - INTERVAL 3 DAY " +
+      "GROUP BY oi.product_id " +
+      "ORDER BY COUNT(oi.product_id) DESC " +
+      "LIMIT 5", nativeQuery = true)
   List<Long> bestItemsForThreeDays();
 }

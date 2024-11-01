@@ -16,7 +16,7 @@ import org.wisdom.ecommerce.user.domain.User;
 public class UserEntity extends BaseTimeEntity {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   private String email;
 

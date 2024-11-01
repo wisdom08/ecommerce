@@ -15,7 +15,7 @@ import org.wisdom.ecommerce.product.domain.Product;
 public class ProductEntity extends BaseTimeEntity {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   private String name;
   private int price;

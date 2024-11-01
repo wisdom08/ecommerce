@@ -16,7 +16,7 @@ import org.wisdom.ecommerce.config.BaseTimeEntity;
 public class OrderItemEntity extends BaseTimeEntity {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   private Long orderId;

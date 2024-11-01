@@ -1,6 +1,10 @@
 package org.wisdom.ecommerce.cart.infra;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import org.wisdom.ecommerce.cart.domain.CartItem;
@@ -12,7 +16,7 @@ import org.wisdom.ecommerce.cart.domain.CartItem;
 public class CartItemEntity {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   private Long cartId;
   private Long productId;

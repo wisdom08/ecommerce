@@ -15,7 +15,7 @@ import org.wisdom.ecommerce.wallet.domain.Wallet;
 public class WalletEntity extends BaseTimeEntity {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   private Long userId;
   private Integer balance;

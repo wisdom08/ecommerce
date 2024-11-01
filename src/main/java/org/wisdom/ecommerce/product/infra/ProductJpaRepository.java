@@ -7,15 +7,12 @@ import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.transaction.annotation.Transactional;
 
 public interface ProductJpaRepository extends JpaRepository<ProductEntity, Long> {
 
-  @Transactional
   @Lock(LockModeType.PESSIMISTIC_WRITE)
   Optional<ProductEntity> findById(Long productId);
 
-  @Transactional
   @Modifying
   @Query("update ProductEntity p SET p.quantity = :newStock where p.id = :id")
   void updateStock(@Param("id") Long id, @Param("newStock") int newStock);

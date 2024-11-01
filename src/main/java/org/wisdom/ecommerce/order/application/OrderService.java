@@ -1,6 +1,7 @@
 package org.wisdom.ecommerce.order.application;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class OrderService {
@@ -11,6 +12,7 @@ public class OrderService {
     this.orderRepository = orderRepository;
   }
 
+  @Transactional
   public Long order(Long userId) {
     return orderRepository.place(userId);
   }

@@ -8,6 +8,7 @@ import org.wisdom.ecommerce.product.application.ProductService;
 import org.wisdom.ecommerce.user.application.UserService;
 import org.wisdom.ecommerce.wallet.application.TransactionService;
 import org.wisdom.ecommerce.wallet.application.WalletService;
+import org.wisdom.ecommerce.wallet.infra.TransactionType;
 
 @Component
 public class OrderFacade {
@@ -40,7 +41,7 @@ public class OrderFacade {
     val product = productService.getProductBy(productId);
     val totalPrice = product.price() * quantity;
     walletService.minusBalance(wallet, totalPrice);
-    transactionService.saveTransaction(wallet.walletId(), totalPrice);
+    transactionService.saveTransaction(wallet.walletId(), totalPrice, TransactionType.DEDUCT);
     productService.updateStock(product, quantity);
     val orderId = orderService.order(userId);
     orderItemService.save(orderId, product.id(), quantity, product.price());

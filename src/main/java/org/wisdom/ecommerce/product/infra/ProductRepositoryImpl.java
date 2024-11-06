@@ -30,6 +30,6 @@ public class ProductRepositoryImpl implements ProductRepository {
 
   @Override
   public void updateStock(Product product, Integer quantity) {
-    productJpaRepository.updateStock(product.id(), product.quantity() - quantity);
+    productJpaRepository.updateStock(product.id(), quantity);
   }
 }

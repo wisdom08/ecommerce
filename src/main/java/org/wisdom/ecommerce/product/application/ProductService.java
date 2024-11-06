@@ -27,6 +27,6 @@ public class ProductService {
   @Transactional
   public void updateStock(Product product, Integer quantity) {
     product.validateQuantity(quantity);
-    productRepository.updateStock(product, quantity);
+    productRepository.updateStock(product, product.quantity() - quantity);
   }
 }

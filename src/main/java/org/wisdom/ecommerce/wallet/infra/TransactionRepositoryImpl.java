@@ -13,8 +13,8 @@ public class TransactionRepositoryImpl implements TransactionRepository {
   }
 
   @Override
-  public void save(Long walletId, Integer amount) {
-    TransactionEntity entity = TransactionEntity.chargeOf(walletId, amount);
+  public void save(Long walletId, Integer amount, TransactionType transactionType) {
+    TransactionEntity entity = TransactionEntity.of(walletId, amount, transactionType);
     repository.save(entity);
   }
 }

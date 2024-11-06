@@ -13,7 +13,6 @@ public class WalletService {
     this.walletRepository = walletRepository;
   }
 
-
   @Transactional(readOnly = true)
   public Wallet getWalletBy(Long validUserId) {
     return walletRepository.getWalletBy(validUserId);

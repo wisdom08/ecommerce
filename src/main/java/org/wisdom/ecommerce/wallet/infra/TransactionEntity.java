@@ -38,11 +38,11 @@ public class TransactionEntity extends BaseTimeEntity {
     this.type = type;
   }
 
-  public static TransactionEntity chargeOf(Long walletId, int amount) {
+  public static TransactionEntity of(Long walletId, int amount, TransactionType transactionType) {
     return TransactionEntity.builder()
         .walletId(walletId)
         .amount(amount)
-        .type(TransactionType.CHARGE)
+        .type(transactionType)
         .build();
   }
 }

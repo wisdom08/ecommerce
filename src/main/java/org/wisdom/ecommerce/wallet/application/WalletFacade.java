@@ -3,6 +3,7 @@ package org.wisdom.ecommerce.wallet.application;
 import lombok.val;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.wisdom.ecommerce.wallet.infra.TransactionType;
 
 @Component
 public class WalletFacade {
@@ -23,7 +24,7 @@ public class WalletFacade {
   public WalletInfo charge(Long userId, Integer amount) {
     val validWallet = walletService.getWalletBy(userId);
     walletService.charge(validWallet, amount);
-    transactionService.saveTransaction(validWallet.walletId(), amount);
+    transactionService.saveTransaction(validWallet.walletId(), amount, TransactionType.CHARGE);
     return WalletInfo.walletCharged(validWallet, amount);
   }
 }

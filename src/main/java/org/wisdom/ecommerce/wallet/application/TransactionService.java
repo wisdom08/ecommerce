@@ -2,6 +2,7 @@ package org.wisdom.ecommerce.wallet.application;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.wisdom.ecommerce.wallet.infra.TransactionType;
 
 @Service
 public class TransactionService {
@@ -13,7 +14,7 @@ public class TransactionService {
   }
 
   @Transactional
-  public void saveTransaction(Long walletId, Integer amount) {
-    repository.save(walletId, amount);
+  public void saveTransaction(Long walletId, Integer amount, TransactionType transactionType) {
+    repository.save(walletId, amount, transactionType);
   }
 }

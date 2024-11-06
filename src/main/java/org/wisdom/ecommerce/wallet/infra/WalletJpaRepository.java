@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface WalletJpaRepository extends JpaRepository<WalletEntity, Long>, WalletRepositoryCustom {
+public interface WalletJpaRepository extends JpaRepository<WalletEntity, Long> {
 
   Optional<WalletEntity> findByUserId(Long userId);
 

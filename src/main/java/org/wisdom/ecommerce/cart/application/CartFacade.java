@@ -2,7 +2,6 @@ package org.wisdom.ecommerce.cart.application;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.val;
 import org.springframework.stereotype.Component;
@@ -28,7 +27,7 @@ public class CartFacade {
     val productIds = cartItems.stream().map(CartInfo::productId).toList();
     val products = productService.getProductsBy(productIds);
 
-    Map<Long, Product> productIdToProductMap = products.stream()
+    val productIdToProductMap = products.stream()
         .collect(Collectors.toMap(Product::id, product -> product));
 
     ArrayList<CartInfo> res = new ArrayList<>();
@@ -43,14 +42,13 @@ public class CartFacade {
   }
 
   public void removeProductFromCart(Long userId, Long productId) {
-    Long validCartId = cartService.getCartsBy(userId);
+    val validCartId = cartService.getCartsBy(userId);
     cartItemService.removeItem(validCartId, productId);
   }
 
   public void addProductToCart(Long userId, Long productId, Integer quantity) {
-    Long validCartId = cartService.getCartsBy(userId);
-    Long validProductId = productService.getProductBy(productId).id();
-
+    val validCartId = cartService.getCartsBy(userId);
+    val validProductId = productService.getProductBy(productId).id();
     cartItemService.addItem(validCartId, validProductId, quantity);
   }
 }

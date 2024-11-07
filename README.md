@@ -44,10 +44,11 @@
 
 2.5 성능 목표
 - 캐싱 적용 전: 평균 응답 시간 149ms
-- ![img.png](docs/best-api-before-caching.png)
+![img.png](docs/best-api-before-caching.png)
 
-- 캐싱 적용 후 목표: 20ms 이하로 단축
-
+- 캐싱 적용 후 목표: 20ms 이하로 단축 -> 5ms
+![img.png](docs/best-api-after-caching.png)
+![img.png](docs/best-api-after-caching-log.png)
 ### 3. 성능 개선 효과 분석
 - 기대 효과: 캐싱 적용으로 인한 응답 시간 단축과 함께, API 호출 빈도 감소로 데이터베이스의 부하가 줄어들어 시스템 전체 성능이 개선될 것으로 예상된다. 이를 통해 사용자에게 더 빠르고 안정적인 서비스 경험을 제공할 수 있다.
 - 약간의 데이터 시차 허용: 5분 TTL을 설정한 인메모리 캐시 사용으로 인해 인스턴스 간 데이터 갱신이 완벽히 일치하지 않더라도, 실시간 정확도가 크게 요구되지 않는 서비스 특성상 사용자 경험에 문제를 일으키지 않는다.

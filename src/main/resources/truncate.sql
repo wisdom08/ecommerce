@@ -4,11 +4,6 @@ truncate table wallet;
 INSERT INTO ecommerce.product (name, price, quantity, created_at, updated_at)
 VALUES ('ipad', 1000, 10, NOW(), NOW());
 
-
-INSERT INTO ecommerce.product (name, price, quantity, created_at, updated_at)
-VALUES ('macbook', 1000, 10, NOW(), NOW());
-
-
 INSERT INTO ecommerce.wallet (balance, user_id, created_at, updated_at)
 VALUES (5000, 1, NOW(), NOW()),
        (1000, 2, NOW(), NOW()),

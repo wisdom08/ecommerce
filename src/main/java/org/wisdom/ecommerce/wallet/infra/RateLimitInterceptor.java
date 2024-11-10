@@ -22,6 +22,11 @@ public class RateLimitInterceptor implements HandlerInterceptor {
   public static final int SC_TOO_MANY_REQUESTS = 429;
   private static final int MAX_REQUESTS_PER_MINUTE = 1;
   private Map<Long, Long> userRequestCount = new ConcurrentHashMap<>();
+  private final ObjectMapper objectMapper;
+
+  public RateLimitInterceptor(ObjectMapper objectMapper) {
+    this.objectMapper = objectMapper;
+  }
 
   @Override
   public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -87,7 +92,6 @@ public class RateLimitInterceptor implements HandlerInterceptor {
 
   private Long getUserIdFromJson(String requestJsonBody) {
     try {
-      val objectMapper = new ObjectMapper();
       val request = objectMapper.readValue(requestJsonBody, WalletApiRequest.class);
       return request.userId();
     } catch (Exception e) {

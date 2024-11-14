@@ -5,6 +5,51 @@
 - Java 23, Spring Boot 3.3.4, Gradle, Mysql, JPA
 
 <details>
+    <summary>Index</summary>
+
+- 자주 조회 하는 쿼리 그리고 복잡한 쿼리를 파악하고 조회 성능 향상을 위해 인덱스를 적용 하려고 한다. (자주 조회 하는 쿼리는 장바구니 조회 API라고 가정했다.)
+- 인덱스 적용에 앞서 userId가 1번인 유저에 1000건의 장바구니 데이터를 추가했고 페이징 처리를 추가 했다.
+
+장바구니 조회 쿼리
+```sql
+select cart_item.id, cart_item.cart_id, cart_item.product_id, cart_item.quantity
+from cart_item
+where cart_item.cart_id = 1
+limit 20
+```
+
+#### 인덱스 생성 전
+cart_item - index
+```sql
+show index from cart_item
+```
+![img_9.png](img_9.png)
+
+explain analyze
+![img_11.png](img_11.png)
+
+execute
+![img_12.png](img_12.png)
+
+#### 인덱스 생성 후
+```sql
+create index cart_item_cart_id_index
+    on cart_item (cart_id);
+```
+
+index
+![index.png](docs/index.png)
+
+explain
+![img_15.png](img_15.png)
+
+execute
+![img_17.png](img_17.png)
+
+
+</details>
+
+<details>
     <summary>캐시 처리 보고서</summary>
 
 ### 1. 개요

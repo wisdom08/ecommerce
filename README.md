@@ -132,7 +132,7 @@ group by oi.product_id order by count(oi.product_id) desc limit 5
 ### Index 생성 전 성능 분석
 #### order_item - index
 ```sql
-show index from cart_item
+show index from order_item
 ```
 ![index_7.png](docs/index/index_7.png)
 

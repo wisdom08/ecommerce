@@ -7,13 +7,13 @@
 <details>
     <summary>Index 최적화</summary>
 
-#### 배경 및 목적
-- 자주 조회하는 쿼리와 복잡한 쿼리의 조회 성능을 개선하기 위해 적절한 인덱스를 적용하려고 한다. 자주 조회하는 쿼리 예시로 장바구니 조회 API를 설정하고, 인덱스 적용 전후의 성능을 비교했다.
+### 배경 및 목적
+- 자주 조회하는 쿼리와 복잡한 쿼리의 조회 성능을 개선하기 위해 적절한 Index를 적용하려고 한다. 자주 조회하는 쿼리 예시로 장바구니 조회 API를 설정하고, Index 적용 전후의 성능을 비교했다.
 
-#### 테스트 준비
+### 테스트 준비
 - Index 적용에 앞서, userId가 1번인 사용자에게 1,000건의 장바구니 데이터를 추가 하였고, 페이지네이션 처리를 구현했다.
 
-#### 장바구니 조회 쿼리
+### 장바구니 조회 쿼리
 ```sql
 select cart_item.id, cart_item.cart_id, cart_item.product_id, cart_item.quantity
 from cart_item
@@ -21,50 +21,50 @@ where cart_item.cart_id = 1
 limit 20
 ```
 
-#### Index 생성 전 성능 분석
-cart_item - index
+### Index 생성 전 성능 분석
+#### cart_item - index
 ```sql
 show index from cart_item
 ```
-![img_9.png](img_9.png)
+![index_1.png](docs/index/index_1.png)
 
-explain analyze
-![img_11.png](img_11.png)
+#### explain analyze
+![index_2.png](docs/index/index_2.png)
 
-execute
-![img_12.png](img_12.png)
+#### execute
+![index_3.png](docs/index/index_3.png)
 
 #### 분석 결과
 - Index가 없어서 전체 테이블 스캔이 발생 했으며, 실행 시간이 약 8ms로 측정되었다.
 
-#### Index 생성
+### Index 생성
 - Index를 적용하여 cart_id 기준으로 빠른 조회가 가능하게 설정하였다.
 ```sql
 create index cart_item_cart_id_index
     on cart_item (cart_id);
 ```
 
-#### Index 생성 후 성능 분석
+### Index 생성 후 성능 분석
 
-index
-![index.png](docs/index.png)
+#### index
+![index_4.png](docs/index/index_4.png)
 
-explain
-![img_15.png](img_15.png)
+#### explain
+![index_5.png](docs/index/index_5.png)
 
-execute
-![img_17.png](img_17.png)
+#### execute
+![index_6.png](docs/index/index_6.png)
 
 #### 분석 결과
 - `cart_item_cart_id_index` Index를 통한 쿼리 조회가 수행되었고, 실행 시간이 약 4ms로 줄었다.
 
-#### 결과 비교 및 최종 분석
-| 항목        | 인덱스 생성 전 | 인덱스 생성 후 |
+### 결과 비교 및 최종 분석
+| 항목        | Index 생성 전 | Index 생성 후 |
 |-----------|----------|----------|
 | 전체 테이블 스캔 | 발생       | 미발생      |
 | 실행 시간     | 8ms      | 4ms      |
 
-- 결론: cart_item 테이블에 cart_item_cart_id_index 인덱스를 추가한 결과, 전체 테이블 스캔이 발생하지 않았고, 쿼리 성능이 약 50% 개선되었다.
+- 결론: cart_item 테이블에 cart_item_cart_id_index Index를 추가한 결과, 전체 테이블 스캔이 발생하지 않았고, 쿼리 성능이 약 50% 개선되었다.
 
 </details>
 

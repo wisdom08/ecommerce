@@ -5,6 +5,65 @@
 - Java 23, Spring Boot 3.3.4, Gradle, Mysql, JPA
 
 <details>
+    <summary>주문 Transaction 처리에 대해서</summary>
+
+```java
+@Transactional
+public void place(Long userId, Long productId, Integer quantity) {
+  walletService.minusBalance(wallet, totalPrice); // 유저 포인트 차감
+  productService.updateStock(product, quantity); // 상품 재고 차감
+  transactionService.saveTransaction(wallet.walletId(), totalPrice, TransactionType.DEDUCT); // 결제 정보 저장
+  orderItemService.save(orderId, product.id(), quantity, product.price());  // 주문 정보 저장 
+ 
+  dataPlatform.send(); // 주문 정보 전송 
+}
+```
+#### 써드파티를 통한 주문 정보 전송 dataPlatform.send()
+
+asis
+- 현재 orderFacade에서 포인트, 상품 재고, 거래 정보 저장, 써드파티로 주문정보 전송이 하나의 트랜잭션에 있다.
+- 따라서 써드파티를 통한 주문 정보 전송이 실패하는 경우 이커머스의 핵심 로직인 주문까지 실패하게 된다.
+- 그리고 써드파티를 통한 주문 정보 전송이 너무 오래 걸리는 경우 사용자가 결제 후 주문 확인을 하는 게 지체되는 문제 또한 발생한다. -> 전체 트랜잭션에 부정적인 영향을 준다.
+
+
+![transaction-rollback.png](transaction-rollback.png)
+```java
+@Transactional
+  @Test
+  void 주문_정보_전송이_실패해서_롤백되어_포인트_차감이_되지않고_기존잔액을_유지하게_된다() {
+    // given
+    doThrow(new RuntimeException()).when(dataPlatform).send();
+    // when
+    assertThrows(RuntimeException.class, () -> orderFacade.place(userId, productId, quantity));
+    // then
+    assertThat(INITIAL_BALANCE).isEqualTo(walletService.getWalletBy(userId).balance());
+  }
+
+  @Transactional
+  @Test
+  void 주문_정보_전송이_실패해서_롤백되어_상품_재고가_차감되지않고_기존_재고를_유지하게_된다() {
+    // given
+    doThrow(new RuntimeException()).when(dataPlatform).send();
+    // when
+    assertThrows(RuntimeException.class, () -> orderFacade.place(userId, productId, quantity));
+    // then
+    assertThat(INITIAL_QUANTITY).isEqualTo(productService.getProductBy(productId).quantity());
+  }
+```
+
+tobe
+- 주문 정보 전송은 트랜잭션을 분리해서 주문 정보 전송 여부와 관계 없이 주문은 성공하게 만든다.
+- 주문 정보 전송이 완료되지 않더라도 주문은 완료되게 변경한다.
+- 주문 정보 전송은 이벤트를 이용해서 비동기로 처리해서 트랜잭션 소요 시간을 감소시킨다 
+
+
+
+
+
+</details>
+
+
+<details>
     <summary>Index 최적화</summary>
 
 ### 배경 및 목적

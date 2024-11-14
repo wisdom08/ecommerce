@@ -1,10 +1,10 @@
 package org.wisdom.ecommerce.cart.infra;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 import org.wisdom.ecommerce.cart.application.CartItemRepository;
 import org.wisdom.ecommerce.cart.domain.CartItem;
-
-import java.util.List;
 
 @Repository
 public class CartItemRepositoryImpl implements CartItemRepository {
@@ -17,12 +17,8 @@ public class CartItemRepositoryImpl implements CartItemRepository {
 
 
   @Override
-  public List<CartItem> getCartItems(Long validCartId) {
-    return repository.findAllByCartId(validCartId)
-        .stream()
-        .map(CartItemEntity::toDomain)
-        .toList()
-        ;
+  public Page<CartItem> getCartItems(Long validCartId, PageRequest pageRequest) {
+    return repository.findAllByCartId(validCartId, pageRequest).map(CartItemEntity::toDomain);
   }
 
   @Override

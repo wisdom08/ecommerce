@@ -18,7 +18,6 @@ public record CartInfo(Long id, Long productId, Long userId, Integer quantity, S
 
   public static CartInfo from(Product product, CartInfo cartItem) {
     return CartInfo.builder()
-        .id(product.id())
         .productId(cartItem.productId)
         .price(product.price())
         .productName(product.name())

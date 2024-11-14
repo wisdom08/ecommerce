@@ -1,13 +1,13 @@
 package org.wisdom.ecommerce.cart.application;
 
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.wisdom.ecommerce.cart.domain.CartItem;
-
-import java.util.List;
 
 public interface CartItemRepository {
 
-  List<CartItem> getCartItems(Long validCartId);
+  Page<CartItem> getCartItems(Long validCartId, PageRequest pageRequest);
 
   void removeItem(Long cartId, Long productId);
 

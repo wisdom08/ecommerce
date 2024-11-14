@@ -38,7 +38,7 @@ public class CartController {
   @Operation(summary = "조회")
   @GetMapping("/{userId}")
   public CommonApiResponse<Page<CartApiResponse>> getCartBy(@PathVariable(name = "userId") Long userId,
-      @RequestParam int page, @RequestParam int size) {
+      @RequestParam(name = "page") int page, @RequestParam(name = "size") int size) {
     val carts = cartFacade.getCartBy(userId, page, size);
     return CommonApiResponse.success(carts.map(CartApiResponse::of));
   }

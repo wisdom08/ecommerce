@@ -26,7 +26,7 @@ asis
 - 그리고 써드파티를 통한 주문 정보 전송이 너무 오래 걸리는 경우 사용자가 결제 후 주문 확인을 하는 게 지체되는 문제 또한 발생한다. -> 전체 트랜잭션에 부정적인 영향을 준다.
 
 
-![transaction-rollback.png](transaction-rollback.png)
+![transaction-1.png](docs/transaction-1.png)
 ```java
 @Transactional
   @Test
@@ -56,6 +56,22 @@ tobe
 - 주문 정보 전송이 완료되지 않더라도 주문은 완료되게 변경한다.
 - 주문 정보 전송은 이벤트를 이용해서 비동기로 처리해서 트랜잭션 소요 시간을 감소시킨다 
 
+![transaction-1.png](docs/transaction-2.png)
+
+```java
+@Transactional
+  @Test
+  void 주문_정보_전송이_실패하더라도_주문로직은_처리되어_재고와_포인트가_차감된다() {
+    // given
+    doThrow(new RuntimeException()).when(dataPlatform).send(anyLong());
+    // when
+    orderFacade.place(userId, productId, QUANTITY_OF_ORDER);
+    // then
+    verify(eventListener).sendOrderInfo(anyLong());
+    assertThat(walletService.getWalletBy(userId).balance()).isEqualTo(INITIAL_BALANCE - QUANTITY_OF_ORDER);
+    assertThat(productService.getProductBy(productId).quantity()).isEqualTo(INITIAL_QUANTITY-PRODUCT_OF_PRICE);
+  }
+```
 
 
 

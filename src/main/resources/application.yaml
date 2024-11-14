@@ -1,6 +1,10 @@
 spring:
   application:
     name: ecommerce
+  data:
+    redis:
+      repositories:
+        enabled: false
 
   datasource:
     url: jdbc:mysql://localhost:3306/ecommerce

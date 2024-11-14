@@ -4,6 +4,7 @@ import lombok.val;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.wisdom.ecommerce.order.infra.DataPlatform;
+import org.wisdom.ecommerce.order.infra.EventListener;
 import org.wisdom.ecommerce.product.application.ProductService;
 import org.wisdom.ecommerce.user.application.UserService;
 import org.wisdom.ecommerce.wallet.application.TransactionService;
@@ -18,20 +19,19 @@ public class OrderFacade {
   private final ProductService productService;
   private final OrderService orderService;
   private final OrderItemService orderItemService;
-  private final DataPlatform dataPlatform;
   private final TransactionService transactionService;
+  private final EventListener eventListener;
 
-  public OrderFacade(UserService userService, WalletService walletService,
-      ProductService productService,
-      OrderService orderService, OrderItemService orderItemService, DataPlatform dataPlatform,
-      TransactionService transactionService) {
+  public OrderFacade(UserService userService, WalletService walletService, ProductService productService,
+      OrderService orderService, OrderItemService orderItemService, TransactionService transactionService,
+      EventListener eventListener) {
     this.userService = userService;
     this.walletService = walletService;
     this.productService = productService;
     this.orderService = orderService;
     this.orderItemService = orderItemService;
-    this.dataPlatform = dataPlatform;
     this.transactionService = transactionService;
+    this.eventListener = eventListener;
   }
 
   @Transactional
@@ -45,6 +45,7 @@ public class OrderFacade {
     productService.updateStock(product, quantity);
     val orderId = orderService.order(userId);
     orderItemService.save(orderId, product.id(), quantity, product.price());
-    dataPlatform.send();
+
+    eventListener.sendOrderInfo(orderId);
   }
 }

@@ -13,7 +13,58 @@
 ### 테스트 준비
 - Index 적용에 앞서, userId가 1번인 사용자에게 1,000건의 장바구니 데이터를 추가 하였고, 페이지네이션 처리를 구현했다.
 
-### 장바구니 조회 쿼리
+<details>
+    <summary>참고: index explain 칼럼에 대해서</summary>
+
+1. id
+- 각 쿼리 단계에 고유한 식별자를 부여
+- id 값이 클수록 먼저 실행되는 하위 쿼리를 나타내며, 값이 같다면 동시에 실행
+2. select_type
+- 쿼리의 유형
+- 일반적인 값으로는 SIMPLE(단순 쿼리), PRIMARY(기본 쿼리), SUBQUERY(서브쿼리), DERIVED(파생 테이블) 등
+3. table
+- EXPLAIN이 분석하는 테이블의 이름
+4. partitions
+- 쿼리에서 접근하는 파티션을 나타낸다.
+- 파티셔닝된 테이블에서만 표시
+5. type
+- 조인 유형을 나타내며, 쿼리 성능을 분석하는 데 중요한 역할을 한다.
+- 주된 유형
+  - **ALL: 전체 테이블 스캔** 
+  - **INDEX: 인덱스 전체 스캔**
+  - **RANGE: 범위 조건을 이용한 스캔**
+  - **REF: 특정 값으로 조회된 경우**
+  - EQ_REF: 조인된 테이블에서 한 번만 조회
+  - CONST: 상수처럼 인식하여 단일 행을 조회
+6. possible_keys
+- MySQL이 사용할 수 있는 인덱스의 목록
+- 인덱스를 추가하거나 쿼리 최적화가 필요한지 판단하는 데 유용하다.
+7. key
+- MySQL이 실제로 선택한 인덱스를 나타낸다.
+- NULL일 경우 인덱스를 사용하지 않고 전체 테이블 스캔이 발생한다.
+8. key_len
+- 사용된 인덱스의 길이를 나타내며, 인덱스를 사용한 정도를 파악할 수 있다.
+- 일반적으로 key_len 값이 작을수록 성능이 좋다
+9. ref
+- 쿼리에서 특정 조건이 인덱스와 어떻게 매칭되는지를 나타낸다.
+- 일반적으로 어떤 컬럼 또는 상수가 인덱스 조건에 매칭되는지 보여준다
+10.	rows
+- MySQL이 필터링 없이 조회할 예상 행 수
+- 이 값이 클수록 쿼리 성능이 저하될 가능성이 높다
+11.	filtered
+- WHERE 조건에 의해 필터링된 예상 비율(%)을 나타낸다.
+- 100은 모든 행이 필터링됨을 의미
+12.	Extra
+- 추가적인 정보
+- 주요 값
+  - Using index: 인덱스를 통해 필요한 정보가 모두 조회됨.
+  - Using where: WHERE 조건이 필요함.
+  - Using temporary: 임시 테이블을 사용.
+  - Using filesort: 파일 정렬을 사용해 추가 작업 필요.
+
+</details>
+
+### 1. 자주 조회되는 쿼리: 장바구니 조회
 ```sql
 select cart_item.id, cart_item.cart_id, cart_item.product_id, cart_item.quantity
 from cart_item
@@ -28,7 +79,8 @@ show index from cart_item
 ```
 ![index_1.png](docs/index/index_1.png)
 
-#### explain analyze
+#### explain
+![img_11.png](docs/index/index_15.png)
 ![index_2.png](docs/index/index_2.png)
 
 #### execute
@@ -50,6 +102,7 @@ create index cart_item_cart_id_index
 ![index_4.png](docs/index/index_4.png)
 
 #### explain
+![img_10.png](docs/index/index_14.png)
 ![index_5.png](docs/index/index_5.png)
 
 #### execute
@@ -65,6 +118,66 @@ create index cart_item_cart_id_index
 | 실행 시간     | 8ms      | 4ms      |
 
 - 결론: cart_item 테이블에 cart_item_cart_id_index Index를 추가한 결과, 전체 테이블 스캔이 발생하지 않았고, 쿼리 성능이 약 50% 개선되었다.
+
+--- 
+
+### 2. (해당 프로젝트 기준) 복잡한 쿼리: 베스트 상품 조회
+```sql
+select oi.product_id
+from order_item oi
+where oi.created_at >= now() - interval 3 day
+group by oi.product_id order by count(oi.product_id) desc limit 5
+```
+
+### Index 생성 전 성능 분석
+#### order_item - index
+```sql
+show index from cart_item
+```
+![index_7.png](docs/index/index_7.png)
+
+#### explain
+![img_12.png](docs/index/index_16.png)
+![index_8.png](docs/index/index_8.png)
+
+#### execute
+![index_9.png](docs/index/index_9.png)
+
+#### 분석 결과
+- Index가 없어서 전체 테이블 스캔이 발생 했으며, 실행 시간이 약 14ms로 측정되었다.
+
+### Index 생성
+- Index를 적용하여 created_at, product_id 기준으로 빠른 조회가 가능하게 설정하였다.
+  - Index 생성 근거
+    - created_at: 먼저 날짜 필드를 인덱스의 첫 번째 칼럼으로 설정해서 최근 3일 데이터를 빠르게 필터링해서 조회한다.
+    - product_id: `group by` 및 `order by` 연산을 최적화하여 자주 조회되는 상위 5개 제품을 효율적으로 추출할 수 있다.
+```sql
+create index idx_order_item_created_at_product_id on order_item (created_at, product_id);
+```
+
+### Index 생성 후 성능 분석
+
+#### index
+![index_10.png](docs/index/index_10.png)
+
+#### explain
+![index_13.png](docs/index/index_13.png)
+![index_11.png](docs/index/index_11.png)
+
+#### execute
+![index_12.png](docs/index/index_12.png)
+
+#### 분석 결과
+- `idx_order_item_created_at_product_id` Index를 통한 쿼리 조회가 수행되었고, 실행 시간이 약 6ms로 줄었다.
+
+### 결과 비교 및 최종 분석
+| 항목        | Index 생성 전 | Index 생성 후 |
+|-----------|------------|------------|
+| 전체 테이블 스캔 | 발생         | 미발생        |
+| 실행 시간     | 14ms       | 6ms        |
+
+- 결론: order_item 테이블에 idx_order_item_created_at_product_id Index를 추가한 결과, 전체 테이블 스캔이 발생하지 않았고, 쿼리 성능이 약 57% 개선되었다.
+
 
 </details>
 

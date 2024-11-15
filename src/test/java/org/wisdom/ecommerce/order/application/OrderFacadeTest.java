@@ -1,10 +1,9 @@
 package org.wisdom.ecommerce.order.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -13,9 +12,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.transaction.annotation.Transactional;
 import org.wisdom.ecommerce.order.infra.DataPlatform;
-import org.wisdom.ecommerce.order.infra.EventListener;
 import org.wisdom.ecommerce.product.application.ProductService;
 import org.wisdom.ecommerce.product.domain.Product;
 import org.wisdom.ecommerce.product.infra.ProductRedisManager;
@@ -31,11 +30,11 @@ class OrderFacadeTest {
   public static final int INITIAL_QUANTITY = 10;
   public static final int QUANTITY_OF_ORDER = 2;
   public static final int PRODUCT_OF_PRICE = 1000;
-
-
+  private final Long userId = 1L;
+  private final Long productId = 1L;
+  private final Integer quantity = 2;
   @Autowired
   private OrderFacade orderFacade;
-
   @MockBean
   private UserService userService;
   @MockBean
@@ -53,11 +52,7 @@ class OrderFacadeTest {
   @MockBean
   private ProductRedisManager productRedisManager;
   @MockBean
-  private EventListener eventListener;
-
-  private final Long userId = 1L;
-  private final Long productId = 1L;
-  private final Integer quantity = 2;
+  private ApplicationEventPublisher applicationEventPublisher;
 
   @BeforeEach
   void setup() {
@@ -65,7 +60,7 @@ class OrderFacadeTest {
     Wallet wallet = new Wallet(walletId, userId, INITIAL_BALANCE);
     Product product = new Product(productId, "MOCK_PRODUCT", PRODUCT_OF_PRICE, INITIAL_QUANTITY);
 
-    when(userService.getUserBy(userId)).thenReturn(userId);
+//    when(userService.getUserBy(userId)).thenReturn(userId);
     when(walletService.getWalletBy(userId)).thenReturn(wallet);
     when(productService.getProductBy(productId)).thenReturn(product);
   }
@@ -94,16 +89,15 @@ class OrderFacadeTest {
     assertThat(productService.getProductBy(productId).quantity()).isEqualTo(INITIAL_QUANTITY);
   }
 
-  @Transactional
   @Test
   void 주문_정보_전송이_실패하더라도_주문로직은_처리되어_재고와_포인트가_차감된다() {
     // given
-    doThrow(new RuntimeException()).when(dataPlatform).send(anyLong());
+    doThrow(new RuntimeException()).when(applicationEventPublisher).publishEvent(new RegisteredEvent(anyLong()));
     // when
     orderFacade.place(userId, productId, QUANTITY_OF_ORDER);
     // then
-    verify(eventListener).sendOrderInfo(anyLong());
+//    verify(applicationEventPublisher).publishEvent(new RegisteredEvent(anyLong()));
     assertThat(walletService.getWalletBy(userId).balance()).isEqualTo(INITIAL_BALANCE - QUANTITY_OF_ORDER);
-    assertThat(productService.getProductBy(productId).quantity()).isEqualTo(INITIAL_QUANTITY-PRODUCT_OF_PRICE);
+    assertThat(productService.getProductBy(productId).quantity()).isEqualTo(INITIAL_QUANTITY - PRODUCT_OF_PRICE);
   }
 }

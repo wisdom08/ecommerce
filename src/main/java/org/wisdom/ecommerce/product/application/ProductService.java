@@ -37,6 +37,7 @@ public class ProductService {
   @Transactional
   public void updateStock(Product product, Integer quantity) {
     product.validateQuantity(quantity);
+    System.out.println("\"product\" = " + "product");
     productRepository.updateStock(product, product.quantity() - quantity);
     productRedisManager.update(Product.builder()
         .id(product.id())

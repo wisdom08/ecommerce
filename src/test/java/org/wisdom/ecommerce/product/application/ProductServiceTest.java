@@ -9,6 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.wisdom.ecommerce.product.domain.Product;
+import org.wisdom.ecommerce.product.infra.ProductRedisManager;
 
 @ExtendWith(MockitoExtension.class)
 class ProductServiceTest {
@@ -18,6 +19,9 @@ class ProductServiceTest {
 
   @Mock
   private ProductRepository repository;
+
+  @Mock
+  private ProductRedisManager productRedisManager;
 
   @Test
   void 상품_조회_응답_확인() {

@@ -3,6 +3,7 @@ package org.wisdom.ecommerce.order.infra;
 import java.util.List;
 import org.springframework.stereotype.Repository;
 import org.wisdom.ecommerce.order.application.OrderItemRepository;
+import org.wisdom.ecommerce.order.domain.Order;
 
 @Repository
 public class OrderItemRepositoryImpl implements OrderItemRepository {
@@ -14,8 +15,8 @@ public class OrderItemRepositoryImpl implements OrderItemRepository {
   }
 
   @Override
-  public void save(Long orderId, Long productId, int quantity, int price) {
-    repository.save(OrderItemEntity.of(orderId, productId, quantity, price));
+  public Order save(Long orderId, Long productId, int quantity, int price, Long userId) {
+    return repository.save(OrderItemEntity.of(orderId, productId, quantity, price)).toDomain(userId);
   }
 
   @Override

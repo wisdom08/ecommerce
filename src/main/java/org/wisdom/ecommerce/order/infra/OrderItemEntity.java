@@ -8,6 +8,7 @@ import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import org.wisdom.ecommerce.config.BaseTimeEntity;
+import org.wisdom.ecommerce.order.domain.Order;
 
 @Builder
 @Getter
@@ -41,6 +42,16 @@ public class OrderItemEntity extends BaseTimeEntity {
         .productId(productId)
         .quantity(quantity)
         .unitPrice(price)
+        .build();
+  }
+
+  public Order toDomain(Long userId) {
+    return Order.builder()
+        .userId(userId)
+        .orderId(orderId)
+        .productId(productId)
+        .quantity(quantity)
+        .unitPrice(unitPrice)
         .build();
   }
 }

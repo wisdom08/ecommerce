@@ -1,25 +1,30 @@
 package org.wisdom.ecommerce.order.application;
 
+import static org.springframework.transaction.event.TransactionPhase.AFTER_COMMIT;
+
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
+import org.springframework.transaction.event.TransactionalEventListener;
+import org.wisdom.ecommerce.order.infra.DataPlatform;
 
 @Slf4j
 @Component
 public class DataPlatformListener {
 
+  private final DataPlatform dataPlatform;
+
+  public DataPlatformListener(DataPlatform dataPlatform) {
+    this.dataPlatform = dataPlatform;
+  }
+
   @Async
-  @EventListener
+  @TransactionalEventListener(phase = AFTER_COMMIT)
   public void handleOrderPlacedEvent(OrderPlacedEvent event) {
-    // 데이터 플랫폼에 주문 전송
     val order = event.order();
     log.info("Sending order to data platform: {}", order);
-    log.info("TransactionSynchronizationManager.getCurrentTransactionName(), {}",TransactionSynchronizationManager.getCurrentTransactionName());
-    log.info("TransactionSynchronizationManager.isActualTransactionActive(): {}", TransactionSynchronizationManager.isActualTransactionActive());
-    log.info("Current Thread Name: {}", Thread.currentThread().getName());
-    // 실제 전송 로직
+    // 데이터 플랫폼에 주문 전송
+    dataPlatform.send(order);
   }
 }

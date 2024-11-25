@@ -17,7 +17,7 @@
 
 ### 테스트 준비
 
-- Index 적용에 앞서, userId가 1번인 사용자에게 1,000건의 장바구니 데이터를 추가 하였고, 페이지네이션 처리를 구현했다.
+- Index 적용에 앞서, cart_item과 order_item 테이블 각각 100만 건의 데이터를 추가했다.
 
 #### 테스트 참고
 
@@ -128,16 +128,17 @@ index from cart_item
 
 #### explain
 
-![img_11.png](docs/index/index_15.png)
 ![index_2.png](docs/index/index_2.png)
+![index_3.png](docs/index/index_3.png)
 
 #### execute
 
-![index_3.png](docs/index/index_3.png)
+![index_4.png](docs/index/index_4.png)
+![index_5.png](docs/index/index_5.png)
 
 #### 분석 결과
 
-- Index가 없어서 전체 테이블 스캔이 발생 했으며, 실행 시간이 약 8ms로 측정되었다.
+- Index가 없어서 전체 테이블 스캔이 발생 했으며, 실행 시간이 약 250ms로 측정되었다.
 
 ### Index 생성
 
@@ -152,29 +153,30 @@ create index cart_item_cart_id_index
 
 #### index
 
-![index_4.png](docs/index/index_4.png)
+![index_6.png](docs/index/index_6.png)
 
 #### explain
 
-![img_10.png](docs/index/index_14.png)
-![index_5.png](docs/index/index_5.png)
+![index_7.png](docs/index/index_7.png)
+![index_8.png](docs/index/index_8.png)
 
 #### execute
 
-![index_6.png](docs/index/index_6.png)
+![index_9.png](docs/index/index_9.png)
+![index_10.png](docs/index/index_10.png)
 
 #### 분석 결과
 
-- `cart_item_cart_id_index` Index를 통한 쿼리 조회가 수행되었고, 실행 시간이 약 4ms로 줄었다.
+- `cart_item_cart_id_index` Index를 통한 쿼리 조회가 수행되었고, 실행 시간이 약 6ms로 줄었다.
 
 ### 결과 비교 및 최종 분석
 
 | 항목        | Index 생성 전 | Index 생성 후 |
 |-----------|------------|------------|
 | 전체 테이블 스캔 | 발생         | 미발생        |
-| 실행 시간     | 8ms        | 4ms        |
+| 실행 시간     | 250ms      | 6ms        |
 
-- 결론: cart_item 테이블에 cart_item_cart_id_index Index를 추가한 결과, 전체 테이블 스캔이 발생하지 않았고, 쿼리 성능이 약 50% 개선되었다.
+- 결론: cart_item 테이블에 cart_item_cart_id_index Index를 추가한 결과, 전체 테이블 스캔이 발생하지 않았고, 쿼리 성능이 약 97% 개선되었다.
 
 --- 
 
@@ -197,20 +199,21 @@ show
 index from order_item
 ```
 
-![index_7.png](docs/index/index_7.png)
+![index_11.png](docs/index/index_11.png)
 
 #### explain
 
-![img_12.png](docs/index/index_16.png)
-![index_8.png](docs/index/index_8.png)
+![index_12.png](docs/index/index_12.png)
+![index_13.png](docs/index/index_13.png)
 
 #### execute
 
-![index_9.png](docs/index/index_9.png)
+![index_14.png](docs/index/index_14.png)
+![index_15.png](docs/index/index_15.png)
 
 #### 분석 결과
 
-- Index가 없어서 전체 테이블 스캔이 발생 했으며, 실행 시간이 약 14ms로 측정되었다.
+- Index가 없어서 전체 테이블 스캔이 발생 했으며, 실행 시간이 약 291ms로 측정되었다.
 
 ### Index 생성
 
@@ -227,16 +230,17 @@ create index idx_order_item_created_at_product_id on order_item (created_at, pro
 
 #### index
 
-![index_10.png](docs/index/index_10.png)
+![index_16.png](docs/index/index_16.png)
 
 #### explain
 
-![index_13.png](docs/index/index_13.png)
-![index_11.png](docs/index/index_11.png)
+![index_17.png](docs/index/index_17.png)
+![index_18.png](docs/index/index_18.png)
 
 #### execute
 
-![index_12.png](docs/index/index_12.png)
+![index_19.png](docs/index/index_19.png)
+![index_20.png](docs/index/index_20.png)
 
 #### 분석 결과
 
@@ -247,9 +251,9 @@ create index idx_order_item_created_at_product_id on order_item (created_at, pro
 | 항목        | Index 생성 전 | Index 생성 후 |
 |-----------|------------|------------|
 | 전체 테이블 스캔 | 발생         | 미발생        |
-| 실행 시간     | 14ms       | 6ms        |
+| 실행 시간     | 291ms      | 6ms        |
 
-- 결론: order_item 테이블에 idx_order_item_created_at_product_id Index를 추가한 결과, 전체 테이블 스캔이 발생하지 않았고, 쿼리 성능이 약 57% 개선되었다.
+- 결론: order_item 테이블에 idx_order_item_created_at_product_id Index를 추가한 결과, 전체 테이블 스캔이 발생하지 않았고, 쿼리 성능이 약 98% 개선되었다.
 
 </details>
 
@@ -413,15 +417,6 @@ response time graph
     - 네트워크 문제: 네트워크가 일시적으로 끊기는 경우, 한 서버가 락을 걸어도 다른 서버는 모를 수도 있다. 이로 인해 동시에 같은 데이터를 수정하게 되어 데이터 불일치 문제가 발생할 수 있다.
 
 </details>
-
-<details>
-    <summary>Redis로 성능 개선</summary>
-
-- 재고 조회 시 비관적락이 걸려 있어 대기 시간이 발생하고, 데이터베이스 부하 문제가 있음
-- 따라서 상품 재고 정보를 캐싱 처리를 하고 비관적락에서 분산락으로 개선해보려고 한다.
-- Redis를 활용함으로써 멀티 인스턴스 환경에서도 재고 관리가 되고, 데이터베이스 부하도 많이 줄 것으로 예상이 된다.
-
-</details> 
 
 <details>
     <summary>요구사항</summary>

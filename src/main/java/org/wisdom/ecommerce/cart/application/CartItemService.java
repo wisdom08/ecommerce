@@ -1,6 +1,7 @@
 package org.wisdom.ecommerce.cart.application;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,8 +15,8 @@ public class CartItemService {
   }
 
   @Transactional(readOnly = true)
-  public List<CartInfo> getCartItems(Long validCartId) {
-    return repository.getCartItems(validCartId).stream().map(CartInfo::from).toList();
+  public Page<CartInfo> getCartItems(Long validCartId, PageRequest pageRequest) {
+    return repository.getCartItems(validCartId, pageRequest).map(CartInfo::from);
   }
 
   @Transactional

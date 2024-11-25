@@ -4,7 +4,7 @@ import lombok.Builder;
 import org.wisdom.ecommerce.cart.application.CartInfo;
 
 @Builder
-public record CartApiResponse(Long userId, Long productId, Long cartId, String productName, Integer quantity) {
+public record CartApiResponse(Long productId, String productName, Integer quantity) {
 
   public static CartApiResponse of(CartInfo carts) {
     return CartApiResponse.builder()

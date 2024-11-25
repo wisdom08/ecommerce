@@ -1,13 +1,19 @@
-package org.wisdom.ecommerce.user.cart;
+package org.wisdom.ecommerce.cart;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import lombok.val;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.wisdom.ecommerce.cart.application.CartFacade;
 import org.wisdom.ecommerce.cart.presentation.CartApiAddRequest;
 import org.wisdom.ecommerce.cart.presentation.CartApiDeleteRequest;
@@ -25,10 +31,15 @@ class CartControllerTest {
   @Test
   void 장바구니_조회_호출() {
     // given
+    val userId = 1L;
+    val page = 0;
+    val size = 10;
     // when
-    controller.getCartBy(any());
+    when(facade.getCartBy(eq(userId), eq(page), eq(size))).thenReturn(
+        new PageImpl<>(new ArrayList<>(), PageRequest.of(page, size), 10));
+    controller.getCartBy(userId, page, size);
     // then
-    verify(facade).getCartBy(any());
+    verify(facade).getCartBy(eq(userId), eq(page), eq(size));
   }
 
   @Test

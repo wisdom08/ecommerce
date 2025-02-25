@@ -25,7 +25,7 @@ jobs:
       - name: Find open PRs
         id: find-prs
         run: |
-          prs=$(gh pr list --state open --json number --jq '.[].number')
+          prs=$(gh pr list --state open --json number,headRefName --jq '.[] | {number: .number, branch: .headRefName}')
           echo "prs=$(echo $prs | base64)" >> $GITHUB_ENV
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -33,9 +33,12 @@ jobs:
       - name: Trigger workflow for PRs
         run: |
           prs=$(echo "${{ env.prs }}" | base64 --decode)
-          for pr in $prs; do
-            echo "✅ Triggering workflow for PR #$pr..."
-            gh workflow run pr-check.yml --repo ${{ github.repository }} --ref refs/pull/$pr/head || echo "⚠️ Failed to trigger workflow for PR #$pr"
+          for row in $(echo "$prs" | jq -c '.'); do
+            pr_number=$(echo $row | jq -r '.number')
+            pr_branch=$(echo $row | jq -r '.branch')
+
+            echo "✅ Triggering workflow for PR #$pr_number (Branch: $pr_branch)..."
+            gh workflow run pr-check.yml --repo ${{ github.repository }} --ref $pr_branch || echo "⚠️ Failed to trigger workflow for PR #$pr_number ($pr_branch)"
           done
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

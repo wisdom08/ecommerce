@@ -1,4 +1,4 @@
-name: Auto Re-run PR Workflows on Master Push
+name: Auto Update PRs on Master Push
 
 on:
   push:
@@ -6,12 +6,14 @@ on:
       - master
 
 jobs:
-  check-and-trigger:
+  update-prs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Install GitHub CLI
         run: |
@@ -30,7 +32,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Check merge conflicts and trigger workflow
+      - name: Merge master into PR branches
         run: |
           prs=$(echo "${{ env.prs }}" | base64 --decode)
           for row in $(echo "$prs" | jq -c '.'); do
@@ -42,10 +44,12 @@ jobs:
             merge_status=$(gh pr view $pr_number --json mergeable --jq '.mergeable')
 
             if [[ "$merge_status" == "CONFLICTING" ]]; then
-              echo "❌ Merge conflict detected in PR #$pr_number ($pr_branch). Skipping workflow trigger."
+              echo "❌ Merge conflict detected in PR #$pr_number ($pr_branch). Skipping update."
             else
-              echo "✅ No conflicts detected. Triggering workflow for PR #$pr_number..."
-              gh workflow run pr-check.yml --repo ${{ github.repository }} --ref refs/pull/$pr_number/head
+              echo "✅ No conflicts detected. Merging master into PR #$pr_number..."
+              git checkout $pr_branch
+              git merge origin/master --no-edit || { echo "❌ Merge conflict detected!"; exit 1; }
+              git push origin $pr_branch
             fi
           done
         env:

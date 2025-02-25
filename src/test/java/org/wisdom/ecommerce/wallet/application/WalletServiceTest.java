@@ -25,22 +25,19 @@ class WalletServiceTest {
 
   @Test
   void 포인트_조회_응답_확인() {
-    // given
     val userId = 0L;
     when(repository.getWalletBy(userId)).thenReturn(Wallet.builder().userId(userId).balance(amount).build());
-    // when
+
     Wallet result = service.getWalletBy(userId);
-    // then
+
     assertThat(result.userId()).isEqualTo(userId);
     assertThat(result.balance()).isEqualTo(amount);
   }
 
   @Test
   void 포인트_충전을_하기_위해_walletRepository의_plusBalance를_호출한다() {
-    // given
-    // when
     service.charge(Wallet.builder().build(), amount);
-    // then
+
     verify(repository, only()).plusBalance(any(), any());
   }
 }

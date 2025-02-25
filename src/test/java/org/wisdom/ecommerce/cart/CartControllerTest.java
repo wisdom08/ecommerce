@@ -30,33 +30,28 @@ class CartControllerTest {
 
   @Test
   void 장바구니_조회_호출() {
-    // given
     val userId = 1L;
     val page = 0;
     val size = 10;
-    // when
+
     when(facade.getCartBy(eq(userId), eq(page), eq(size))).thenReturn(
         new PageImpl<>(new ArrayList<>(), PageRequest.of(page, size), 10));
     controller.getCartBy(userId, page, size);
-    // then
+
     verify(facade).getCartBy(eq(userId), eq(page), eq(size));
   }
 
   @Test
   void 장바구니_추가_호출() {
-    // given
-    // when
     controller.addProductToCart(CartApiAddRequest.builder().build());
-    // then
+
     verify(facade).addProductToCart(any(), any(), any());
   }
 
   @Test
   void 장바구니_삭제_호출() {
-    // given
-    // when
     controller.removeProductFromCart(CartApiDeleteRequest.builder().build());
-    // then
+
     verify(facade).removeProductFromCart(any(), any());
   }
 

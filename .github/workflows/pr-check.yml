@@ -5,6 +5,10 @@ on:
     branches:
       - master
 
+permissions:
+  pull-requests: write
+  contents: write
+
 jobs:
   merge-master-and-test:
     runs-on: ubuntu-latest
@@ -15,18 +19,41 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up JDK 23
+      - name: Set up JDK 21 (LTS)
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
-          java-version: '23'
+          java-version: '21'
+
+      - name: Install GitHub CLI
+        run: |
+          sudo apt update
+          sudo apt install gh -y
+
+      - name: Ensure GitHub CLI Authentication
+        run: gh auth status
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Merge master into PR branch
         run: |
+          set -e
+          echo "🔄 Setting up Git config..."
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          echo "🚀 Checking out PR branch: ${{ github.head_ref }}"
           git checkout ${{ github.head_ref }}
-          git merge origin/master --no-edit || { echo "❌ Merge conflict detected! Please resolve manually."; exit 1; }
+
+          echo "🔀 Merging master into PR branch..."
+          git fetch origin master
+          if ! git merge origin/master --no-edit; then
+            echo "❌ Merge conflict detected! Please resolve manually."
+            gh pr comment ${{ github.event.pull_request.number }} --body "⚠️ Merge conflict detected! Please resolve manually." || echo "⚠️ Failed to add comment"
+            exit 1
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Cache Gradle dependencies
         uses: actions/cache@v3
@@ -40,7 +67,15 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Build the Project (without running tests)
-        run: ./gradlew build -x test
+        run: ./gradlew build -x test --no-daemon --continue
 
       - name: Run Tests
-        run: ./gradlew test --parallel
+        run: ./gradlew test --parallel --no-daemon --continue
+
+      - name: Auto-Merge PR if tests pass
+        if: success()
+        run: |
+          echo "✅ Tests passed! Attempting to auto-merge PR..."
+          gh pr merge ${{ github.event.pull_request.number }} --merge --admin
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

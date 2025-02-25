@@ -3,7 +3,7 @@ name: PR Build & Test (Multi-Module)
 on:
   pull_request:
     branches:
-      - develop
+      - master
 
 jobs:
   build-and-test:

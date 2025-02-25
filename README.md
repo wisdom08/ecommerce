@@ -4,7 +4,7 @@
 
 #### 기술 스택
 
-- Java 23, Spring Boot 3.3.4, Gradle, Mysql, JPA
+- Java 21, Spring Boot 3.3.4, Gradle, Mysql, JPA
 
 <details>
     <summary>Index 최적화</summary>

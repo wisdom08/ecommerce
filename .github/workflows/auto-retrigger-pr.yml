@@ -10,6 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
       - name: Install GitHub CLI
         run: |
           sudo apt update
@@ -31,7 +34,7 @@ jobs:
         run: |
           prs=$(echo "${{ env.prs }}" | base64 --decode)
           for pr in $prs; do
-            echo "✅ No conflicts detected. Triggering workflow for PR #$pr..."
+            echo "✅ Triggering workflow for PR #$pr..."
             gh workflow run pr-check.yml --repo ${{ github.repository }} --ref refs/pull/$pr/head || echo "⚠️ Failed to trigger workflow for PR #$pr"
           done
         env:

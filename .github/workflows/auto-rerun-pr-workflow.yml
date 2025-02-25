@@ -8,6 +8,7 @@ on:
 permissions:
   pull-requests: write
   contents: read
+  actions: write
 
 jobs:
   re-run-pr-checks:
@@ -25,7 +26,7 @@ jobs:
       - name: Ensure GitHub CLI Authentication
         run: gh auth status
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
       - name: Find Open PRs targeting master
         id: find-prs
@@ -37,7 +38,7 @@ jobs:
           fi
           echo "prs=$(echo $prs | base64)" >> $GITHUB_ENV
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
       - name: Re-trigger workflow for open PRs
         run: |
@@ -57,4 +58,4 @@ jobs:
             fi
           done
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}

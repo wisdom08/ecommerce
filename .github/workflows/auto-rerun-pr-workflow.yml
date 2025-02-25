@@ -1,0 +1,58 @@
+name: Auto Re-run PR Workflows on master Push
+
+on:
+  push:
+    branches:
+      - master
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  re-run-pr-checks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install GitHub CLI
+        run: |
+          sudo apt update
+          sudo apt install gh -y jq
+
+      - name: Authenticate GitHub CLI
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Find Open PRs targeting master
+        id: find-prs
+        run: |
+          prs=$(gh pr list --state open --base master --json number,headRefName --jq '.[] | {number: .number, branch: .headRefName}')
+          if [[ -z "$prs" ]]; then
+            echo "No open PRs found for master."
+            exit 0
+          fi
+          echo "prs=$(echo $prs | base64)" >> $GITHUB_ENV
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Re-trigger workflow for open PRs
+        run: |
+          prs=$(echo "${{ env.prs }}" | base64 --decode)
+          if [[ -z "$prs" ]]; then
+            echo "No PRs to process."
+            exit 0
+          fi
+
+          for row in $(echo "$prs" | jq -c '.'); do
+            pr_number=$(echo $row | jq -r '.number')
+            pr_branch=$(echo $row | jq -r '.branch')
+
+            echo "🔄 Re-triggering workflow for PR #$pr_number (Branch: $pr_branch)..."
+            if ! gh workflow run pr-check.yml --repo ${{ github.repository }} --ref $pr_branch; then
+              echo "⚠️ Failed to trigger workflow for PR #$pr_number ($pr_branch)"
+            fi
+          done
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

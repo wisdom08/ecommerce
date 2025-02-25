@@ -5,6 +5,10 @@ on:
     branches:
       - master
 
+permissions:
+  pull-requests: write
+  contents: write
+
 jobs:
   merge-master-and-test:
     runs-on: ubuntu-latest
@@ -19,7 +23,12 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
-          java-version: '23'
+          java-version: '21'
+
+      - name: Install GitHub CLI
+        run: |
+          sudo apt update
+          sudo apt install gh -y
 
       - name: Merge master into PR branch
         run: |
@@ -34,9 +43,11 @@ jobs:
           echo "🔀 Merging master into PR branch..."
           if ! git merge origin/master --no-edit; then
             echo "❌ Merge conflict detected! Please resolve manually."
-            git status
+            gh pr comment ${{ github.event.pull_request.number }} --body "⚠️ Merge conflict detected! Please resolve manually."
             exit 1
           fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Cache Gradle dependencies
         uses: actions/cache@v3
@@ -54,3 +65,11 @@ jobs:
 
       - name: Run Tests
         run: ./gradlew test --parallel --no-daemon --continue
+
+      - name: Auto-Merge PR if tests pass
+        if: success()
+        run: |
+          echo "✅ Tests passed! Attempting to auto-merge PR..."
+          gh pr merge ${{ github.event.pull_request.number }} --merge
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

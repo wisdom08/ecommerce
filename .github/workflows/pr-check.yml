@@ -46,6 +46,7 @@ jobs:
           git checkout ${{ github.head_ref }}
 
           echo "🔀 Merging master into PR branch..."
+          git fetch origin master
           if ! git merge origin/master --no-edit; then
             echo "❌ Merge conflict detected! Please resolve manually."
             gh pr comment ${{ github.event.pull_request.number }} --body "⚠️ Merge conflict detected! Please resolve manually." || echo "⚠️ Failed to add comment"
@@ -75,6 +76,6 @@ jobs:
         if: success()
         run: |
           echo "✅ Tests passed! Attempting to auto-merge PR..."
-          gh pr merge ${{ github.event.pull_request.number }} --merge
+          gh pr merge ${{ github.event.pull_request.number }} --merge --admin
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

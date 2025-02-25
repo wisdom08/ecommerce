@@ -19,7 +19,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up JDK 23
+      - name: Set up JDK 21 (LTS)
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
@@ -29,6 +29,11 @@ jobs:
         run: |
           sudo apt update
           sudo apt install gh -y
+
+      - name: Ensure GitHub CLI Authentication
+        run: gh auth status
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Merge master into PR branch
         run: |
@@ -43,7 +48,7 @@ jobs:
           echo "🔀 Merging master into PR branch..."
           if ! git merge origin/master --no-edit; then
             echo "❌ Merge conflict detected! Please resolve manually."
-            gh pr comment ${{ github.event.pull_request.number }} --body "⚠️ Merge conflict detected! Please resolve manually."
+            gh pr comment ${{ github.event.pull_request.number }} --body "⚠️ Merge conflict detected! Please resolve manually." || echo "⚠️ Failed to add comment"
             exit 1
           fi
         env:

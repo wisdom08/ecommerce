@@ -32,7 +32,7 @@ class ProductServiceTest {
     var result = service.getProductBy(0L);
     // then
     assertThat(result.id()).isEqualTo(0L);
-    assertThat(result.name()).isEqualTo("MOCK_PRODUCT_1");
+    assertThat(result.name()).isEqualTo("MOCK_PRODUCT_2");
     assertThat(result.price()).isEqualTo(100000);
   }
 }

@@ -1,0 +1,40 @@
+name: Auto Merge Master into PRs
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  merge-master-to-pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Find open PRs
+        id: find-prs
+        run: |
+          prs=$(gh pr list --state open --json headRefName --jq '.[].headRefName')
+          echo "prs=$prs" >> $GITHUB_ENV
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Merge master into each PR branch
+        run: |
+          for pr in ${{ env.prs }}; do
+            echo "Merging master into $pr"
+            git checkout $pr
+            git merge origin/master --no-edit || { echo "❌ Merge conflict in $pr"; exit 1; }
+            git push origin $pr
+          done
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

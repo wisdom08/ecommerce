@@ -5,8 +5,6 @@ on:
     branches:
       - master
 
-  workflow_dispatch:
-
 jobs:
   merge-master-and-test:
     runs-on: ubuntu-latest
@@ -25,10 +23,20 @@ jobs:
 
       - name: Merge master into PR branch
         run: |
+          set -e
+          echo "🔄 Setting up Git config..."
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          echo "🚀 Checking out PR branch: ${{ github.head_ref }}"
           git checkout ${{ github.head_ref }}
-          git merge origin/master --no-edit || { echo "❌ Merge conflict detected! Please resolve manually."; exit 1; }
+
+          echo "🔀 Merging master into PR branch..."
+          if ! git merge origin/master --no-edit; then
+            echo "❌ Merge conflict detected! Please resolve manually."
+            git status
+            exit 1
+          fi
 
       - name: Cache Gradle dependencies
         uses: actions/cache@v3
@@ -42,7 +50,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Build the Project (without running tests)
-        run: ./gradlew build -x test
+        run: ./gradlew build -x test --no-daemon --continue
 
       - name: Run Tests
-        run: ./gradlew test --parallel
+        run: ./gradlew test --parallel --no-daemon --continue
